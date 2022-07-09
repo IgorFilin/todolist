@@ -6,3 +6,12 @@
 .App > div {
   margin-right: 50px;
 }
+.classErrorInput{
+  border: solid 2px red;
+   border-radius: 3px;
+
+}
+
+.complitedCheckbox{
+    opacity: 0.5;
+}

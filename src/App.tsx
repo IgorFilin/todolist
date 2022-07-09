@@ -8,14 +8,15 @@ export type FilterValuesType = 'All' | 'Active' | 'Completed'
 function App() {
 
     let [arrTasks, setTasks] = useState<Array<arrTasksPropsType>>([
-        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "HTML", isDone: true},
+        {id: v1(), title: "CSS", isDone: true},
         {id: v1(), title: "JS", isDone: true},
         {id: v1(), title: "ReactJS", isDone: false},
         {id: v1(), title: "Redux", isDone: false}
     ])
     let [filter, setFilter] = useState<FilterValuesType>('All')
 
-     //////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////
     function deleteTask(id: string) {
 
         let filterTask = arrTasks.filter(el => el.id !== id)
@@ -43,19 +44,29 @@ function App() {
     /////////////////////////////////////////////////////////////////////////////////
 
 
-    const addNewTask = (str:string) => {
-        let newTask = [{id: v1(), title: str, isDone: false},...arrTasks]
+    const addNewTask = (str: string) => {
+        let newTask = [{id: v1(), title: str, isDone: false}, ...arrTasks]
         setTasks(newTask)
+    }
+    ///////////////////////////////////////////////////////////////////////////////////
+
+    const addCheckedTask = (id: string, isDone: boolean) => {
+
+        let newCheckObj = arrTasks.find(el => el.id === id)
+        if (newCheckObj) {
+            newCheckObj.isDone = isDone
+            setTasks([...arrTasks])
+        }
     }
 
 
     return (<div className="App">
         <Todolist title={'What to learn'}
-                  title2={1}
                   tasks={filterTask}
                   deleteTask={deleteTask}
                   changeFilter={changeFilter}
                   addNewTask={addNewTask}
+                  addCheckedTask={addCheckedTask}
         />
 
     </div>)
