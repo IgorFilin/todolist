@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import {arrTasksPropsType, Todolist} from "./Todolist";
+import {arrTasksPropsType, Todolist} from "./Todolist/Todolist";
 import {v1} from "uuid";
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
@@ -67,6 +67,7 @@ function App() {
                   changeFilter={changeFilter}
                   addNewTask={addNewTask}
                   addCheckedTask={addCheckedTask}
+                  filter={filter}
         />
 
     </div>)

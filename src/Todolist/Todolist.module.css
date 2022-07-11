@@ -1,0 +1,35 @@
+.task {
+    font-family: Algerian;
+}
+
+
+.buttonDelete{
+    border-radius: 10%;
+    margin-left: 10px;
+    background-color: orange;
+
+}
+.buttonDelete:hover{
+    transition: 0.5s;
+    background-color: red;
+    border-radius: 20%;
+}
+
+.inputClass{
+    background-color: whitesmoke;
+    border-radius: 3px;
+    border: 2px solid deepskyblue;
+}
+.buttonAdd {
+    background-color: green;
+    border-radius: 3px;
+    border: 2px solid black;
+    width: 40px;
+}
+.buttonAdd:hover{
+    transition: 0.5s;
+    background-color: orange;
+}
+.inputClass:hover{
+    background-color: cornsilk;
+}

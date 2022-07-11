@@ -15,3 +15,8 @@
 .complitedCheckbox{
     opacity: 0.5;
 }
+
+.activeButton{
+    background-color: darkgray;
+    border: dimgray 2px solid;
+}
