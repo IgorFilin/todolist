@@ -1,22 +1,23 @@
 .App {
-  padding: 30px;
-  display: flex;
+    display: flex;
+    flex-direction: row;
 }
 
 .App > div {
-  margin-right: 50px;
+    margin-right: 50px;
 }
-.classErrorInput{
-  border: solid 2px red;
-   border-radius: 3px;
+
+.classErrorInput {
+    border: solid 2px red;
+    border-radius: 3px;
 
 }
 
-.complitedCheckbox{
+.complitedCheckbox {
     opacity: 0.5;
 }
 
-.activeButton{
+.activeButton {
     background-color: darkgray;
     border: dimgray 2px solid;
 }
