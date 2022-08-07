@@ -1,6 +1,6 @@
 import React from "react";
 import classes from './Todolist.module.css'
-import {FilterValuesType} from ".././App";
+import {arrTasksPropsType, FilterValuesType} from ".././App";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Tasks} from "./Tasks/Tasks";
@@ -20,11 +20,6 @@ type TodoListPropsType = {
     changeTitleTaks: (titleTask: string, id: string, todolistId: string) => void
 }
 
-export type arrTasksPropsType = {
-    id: string,
-    title: string,
-    isDone: boolean
-}
 
 export let Todolist = (props: TodoListPropsType) => {
 

@@ -1,7 +1,8 @@
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import classes from "../Todolist.module.css";
 import React from "react";
-import {arrTasksPropsType} from "../Todolist";
+import {arrTasksPropsType} from "../../App";
+
 
 type TasksTypeProps = {
     filteredTasks: Array<arrTasksPropsType>
