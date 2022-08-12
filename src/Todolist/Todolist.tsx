@@ -4,6 +4,8 @@ import {arrTasksPropsType, FilterValuesType} from ".././App";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Tasks} from "./Tasks/Tasks";
+import {Button, IconButton} from "@material-ui/core";
+import {AddCircle, DeleteForever} from "@material-ui/icons";
 
 
 type TodoListPropsType = {
@@ -55,12 +57,16 @@ export let Todolist = (props: TodoListPropsType) => {
     const tasksNotFound = filteredTasks.length === 0
 
     return (<div className={classes.task}>
-        <h3>
+        <h2 style={{textAlign: 'center'}}>
             <EditableSpan title={props.title} changeTitle={changeTitleTodo}/>
-            <button onClick={() => onClickHandlerTodolistDelete(props.todolistId)} className={classes.buttonDelete}>x
-            </button>
-        </h3>
-        <AddItemForm addItem={addTask}/>
+            <IconButton size={"small"} onClick={() => onClickHandlerTodolistDelete(props.todolistId)}
+                        className={classes.buttonDelete}><DeleteForever/>
+            </IconButton>
+        </h2>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+            <AddItemForm addItem={addTask}/>
+        </div>
+
         <Tasks filteredTasks={filteredTasks}
                todolistId={props.todolistId}
                deleteTask={props.deleteTask}
@@ -68,16 +74,19 @@ export let Todolist = (props: TodoListPropsType) => {
                changeTitleTaks={props.changeTitleTaks}
                tasksNotFound={tasksNotFound}
         />
-        <div>
-            <button onClick={() => onClickChandgeHandler('All', props.todolistId)}
-                    className={props.filter === 'All' ? 'activeButton' : ''}>All
-            </button>
-            <button onClick={() => onClickChandgeHandler('Active', props.todolistId)}
-                    className={props.filter === 'Active' ? 'activeButton' : ''}>Active
-            </button>
-            <button onClick={() => onClickChandgeHandler('Completed', props.todolistId)}
-                    className={props.filter === 'Completed' ? 'activeButton' : ''}>Completed
-            </button>
+        <div style={{textAlign: 'center'}}>
+            <Button color={props.filter === 'All' ? "secondary" : "default"} size={"small"} variant={"contained"}
+                    onClick={() => onClickChandgeHandler('All', props.todolistId)}>All
+            </Button>
+            <Button color={props.filter === 'Active' ? "secondary" : "default"} style={{marginLeft: '3px'}}
+                    size={"small"} variant={"contained"}
+                    onClick={() => onClickChandgeHandler('Active', props.todolistId)}
+            >Active
+            </Button>
+            <Button color={props.filter === 'Completed' ? "secondary" : "default"} style={{marginLeft: '3px'}}
+                    size={"small"} variant={"contained"}
+                    onClick={() => onClickChandgeHandler('Completed', props.todolistId)}>Completed
+            </Button>
         </div>
     </div>)
 }

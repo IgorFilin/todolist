@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from 'react';
+import React, {useReducer} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist/Todolist";
 import {v1} from "uuid";
@@ -18,6 +18,8 @@ import {
     deleteTodolistAC,
     TodolistReducer
 } from "./reducers/TodolistReducer";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {Menu} from "@material-ui/icons";
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
 export type TodolistsType = {
@@ -95,8 +97,9 @@ function App() {
     }
     const mappingTodolists = todolist.map(t => {
         let arrayTasks = tasks[t.id]
-        return (<Todolist key={t.id}
-                          deleleTodolist={deleleTodolist}
+        return (<Grid key={t.id} item>
+            <Paper style={{padding: '5px 10px 10px 10px'}}>
+                <Todolist deleleTodolist={deleleTodolist}
                           todolistId={t.id}
                           title={t.title}
                           tasks={arrayTasks}
@@ -107,12 +110,32 @@ function App() {
                           filter={t.filter}
                           changeTitleTodolist={changeTitleTodolist}
                           changeTitleTaks={changeTitleTask}
-        />)
+                />
+            </Paper>
+        </Grid>)
     })
 
     return (<div className="App">
-        <AddItemForm addItem={addTodolist}/>
-        {mappingTodolists}
+        <AppBar position="static">
+            <Toolbar style={{justifyContent: "space-between"}}>
+                <IconButton edge="start" color="secondary" aria-label="menu">
+                    <Menu/>
+                </IconButton>
+                <Typography variant="h5">
+                    Todolists
+                </Typography>
+                <Button color="inherit" variant={"outlined"}>Logout</Button>
+            </Toolbar>
+        </AppBar>
+        <Container fixed>
+            <Grid container style={{paddingTop: '20px', paddingBottom: '20px'}}>
+                <AddItemForm addItem={addTodolist}/>
+            </Grid>
+            <Grid container spacing={5}>
+                {mappingTodolists}
+            </Grid>
+        </Container>
+
     </div>)
 
 

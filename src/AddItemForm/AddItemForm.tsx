@@ -1,5 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import classes from "../Todolist/Todolist.module.css";
+import {IconButton, TextField} from "@material-ui/core";
+import {AddCircleTwoTone} from "@material-ui/icons";
 
 
 type AddItemFormType = {
@@ -7,6 +9,7 @@ type AddItemFormType = {
 }
 
 export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
+    debugger
     let [filterInput, setFilterInput] = useState("")
     let [error, setError] = useState<string | null>(null)
     let filterInputTrim = filterInput.trim()
@@ -31,10 +34,14 @@ export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
     }
 
     return (
-        <div>
-            <input className={error ? 'classErrorInput' : classes.inputClass} value={filterInput}
-                   onChange={onChangeHandler} onKeyDown={keyPressAddItem}/>
-            <button className={classes.buttonAdd} onClick={onClickaddItem}>+</button>
+        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+            <TextField title={'Title'} size={"small"} variant={"outlined"}
+                       className={error ? 'classErrorInput' : classes.inputClass}
+                       value={filterInput}
+                       onChange={onChangeHandler} onKeyDown={keyPressAddItem}/>
+            <IconButton size={"small"}
+                        className={classes.buttonAdd}
+                        onClick={onClickaddItem}><AddCircleTwoTone/></IconButton>
             {error && <div>{error}</div>}
         </div>
     );

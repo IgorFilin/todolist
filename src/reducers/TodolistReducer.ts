@@ -19,7 +19,6 @@ export const TodolistReducer = (state: Array<TodolistsType>, action: ActionsType
         case "CHANGE-TITLE-TODOLIST":
             return state.map(tl => tl.id === action.todolistID ? {...tl, title: action.title} : tl)
         default:
-            throw new Error('Error')
             return state
     }
 

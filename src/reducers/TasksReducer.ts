@@ -53,7 +53,6 @@ export const TasksReducer = (state: TaskType, action: AllActionCreatorsType): Ta
             return {...state, [action.idTodolist]: []}
         }
         default:
-            throw new Error('Error')
             return state
     }
 }
