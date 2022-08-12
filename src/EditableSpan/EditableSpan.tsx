@@ -26,7 +26,7 @@ export const EditableSpan = (props: EditableSpanTypeProps) => {
         editMode ?
             <TextField variant={"standard"} value={valueInput} onChange={onChangeHandker} onBlur={changeEditModeOnBlur}
                        autoFocus/> :
-            <span onDoubleClick={changeEditModeOnDoubleClick}>{props.title}</span>
+            <span style={{fontSize: '15px'}} onDoubleClick={changeEditModeOnDoubleClick}>{props.title}</span>
     );
 };
 

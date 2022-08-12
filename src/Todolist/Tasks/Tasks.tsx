@@ -29,15 +29,18 @@ export const Tasks = (props: TasksTypeProps) => {
     }
 
     return (<div>{props.tasksNotFound ? <h4>Tasks not found</h4> : props.filteredTasks.map((t) => {
-        return (<div style={{marginLeft: '10px'}} key={t.id} className={t.isDone ? 'complitedCheckbox' : ''}>
+        return (<div style={t.isDone ? {
+            textDecoration: 'line-through',
+            marginLeft: '10px',
+            opacity: '0.5'
+        } : {marginLeft: '10px'}}
+                     key={t.id}>
             <FormControlLabel
                 control={<Checkbox checked={t.isDone}
                                    onChange={(e) => onChangeCheckHandler(t.id, e.currentTarget.checked, props.todolistId)}
-                                   icon={<FavoriteBorder/>} checkedIcon={<Favorite/>} name="checkedH"/>}
-                label=""
-            />
+                                   icon={<FavoriteBorder/>} checkedIcon={<Favorite/>} name="checkedH"/>} label=""/>
             <EditableSpan title={t.title} changeTitle={(title) => changeTitleTask(title, t.id)}/>
-            <IconButton size={"small"} className={classes.buttonDelete}
+            <IconButton size={"small"}
                         onClick={() => onClickHandlerDeleteTask(t.id, props.todolistId)}><Delete/>
             </IconButton>
         </div>)
