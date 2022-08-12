@@ -35,14 +35,15 @@ export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
 
     return (
         <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            <TextField title={'Title'} size={"small"} variant={"outlined"}
-                       className={error ? 'classErrorInput' : classes.inputClass}
+            <TextField label={'Title'} size={"small"} variant={"outlined"}
+                       error={!!error}
                        value={filterInput}
+                       helperText={error && <div>{error}</div>}
                        onChange={onChangeHandler} onKeyDown={keyPressAddItem}/>
             <IconButton size={"small"}
                         className={classes.buttonAdd}
                         onClick={onClickaddItem}><AddCircleTwoTone/></IconButton>
-            {error && <div>{error}</div>}
+
         </div>
     );
 };
