@@ -5,15 +5,13 @@ import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm/AddItemForm";
 import {
     addNewTaskAC,
-    deleleTasksForTodolistAC,
     changeStatusTaskAC,
     changeTitleTaskAC,
-    deleteTaskAC,
-    TasksReducer, addTasksForTodolistAC
+    deleteTaskAC, TasksReducer
 } from "./reducers/TasksReducer";
 import {
     addTodolistAC,
-    changeFilterAC,
+    changeFilterTodolistAC,
     changeTitleTodolistAC,
     deleteTodolistAC,
     TodolistReducer
@@ -32,7 +30,7 @@ export type arrTasksPropsType = {
     title: string,
     isDone: boolean
 }
-export type TaskType = {
+export type TasksStateType = {
     [key: string]: Array<arrTasksPropsType>
 }
 
@@ -67,7 +65,7 @@ function App() {
     }
 
     const changeFilter = (isDoneStatus: FilterValuesType, todolistId: string) => {
-        dispatchTodolist(changeFilterAC(isDoneStatus, todolistId))
+        dispatchTodolist(changeFilterTodolistAC(isDoneStatus, todolistId))
     }
 
     const addNewTask = (titleTask: string, idTodolist: string) => {
@@ -80,13 +78,12 @@ function App() {
 
     const deleleTodolist = (idTodolist: string) => {
         dispatchTodolist(deleteTodolistAC(idTodolist))
-        dispatchTasks(deleleTasksForTodolistAC(idTodolist))
+        dispatchTasks(deleteTodolistAC(idTodolist))
     }
 
     const addTodolist = (title: string) => {
-        const todolistID = v1()
-        dispatchTodolist(addTodolistAC(title, todolistID))
-        dispatchTasks(addTasksForTodolistAC(todolistID))
+        dispatchTodolist(addTodolistAC(title))
+        dispatchTasks(addTodolistAC(title))
     }
 
     const changeTitleTodolist = (title: string, idtodolist: string) => {

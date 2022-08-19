@@ -1,5 +1,6 @@
-import {TaskType} from "../App";
+import {TasksStateType} from "../App";
 import {v1} from "uuid";
+import {AddTodolistACType, DeleteTodolistACType} from "./TodolistReducer";
 
 
 type AllActionCreatorsType =
@@ -7,17 +8,15 @@ type AllActionCreatorsType =
     | AddNewTaskACType
     | ChangeStatusTaskType
     | ChangeTitleTaskAC
-    | DeleleTasksForTodolistAC
-    | AddTasksForTodolistAC
+    | DeleteTodolistACType
+    | AddTodolistACType
 type DeleteTaskACType = ReturnType<typeof deleteTaskAC>
 type AddNewTaskACType = ReturnType<typeof addNewTaskAC>
 type ChangeStatusTaskType = ReturnType<typeof changeStatusTaskAC>
 type ChangeTitleTaskAC = ReturnType<typeof changeTitleTaskAC>
-type DeleleTasksForTodolistAC = ReturnType<typeof deleleTasksForTodolistAC>
-type AddTasksForTodolistAC = ReturnType<typeof addTasksForTodolistAC>
 
 
-export const TasksReducer = (state: TaskType, action: AllActionCreatorsType): TaskType => {
+export const TasksReducer = (state: TasksStateType, action: AllActionCreatorsType): TasksStateType => {
     switch (action.type) {
         case"DELETE-TASK":
             return {...state, [action.idTodolist]: state[action.idTodolist].filter(task => task.id !== action.idTask)}
@@ -44,13 +43,13 @@ export const TasksReducer = (state: TaskType, action: AllActionCreatorsType): Ta
                 } : t)
             }
         }
-        case "DELETE-TASKS-FOR-TODOLIST": {
+        case "DELETE-TODOLIST": {
             let copyState = {...state}
             delete copyState[action.idTodolist]
             return copyState
         }
-        case "ADD-TASKS-FOR-TODOLIST": {
-            return {...state, [action.idTodolist]: []}
+        case "ADD-TODOLIST": {
+            return {...state, [action.todolistID]: []}
         }
         default:
             return state
@@ -67,12 +66,6 @@ export const addNewTaskAC = (titleTask: string, idTodolist: string) => {
 export const changeStatusTaskAC = (idTask: string, statusTask: boolean, idTodolist: string) => {
     return {type: 'CHANGE-STATUS-TASK', idTask, statusTask, idTodolist} as const
 }
-export const changeTitleTaskAC = (title: string, id: string, idTodolist: string) => {
+export const changeTitleTaskAC = (id: string, title: string, idTodolist: string) => {
     return {type: 'CHANGE-TITLE-TASK', title, id, idTodolist} as const
-}
-export const deleleTasksForTodolistAC = (idTodolist: string) => {
-    return {type: 'DELETE-TASKS-FOR-TODOLIST', idTodolist} as const
-}
-export const addTasksForTodolistAC = (idTodolist: string) => {
-    return {type: 'ADD-TASKS-FOR-TODOLIST', idTodolist} as const
 }
