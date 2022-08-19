@@ -25,7 +25,7 @@ export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
             setFilterInput('')
         } else if (event.key === 'Enter' && filterInput === '') setError('Title is requider')
     }
-    const onClickaddItem = () => {
+    const onClickAddItem = () => {
         if (filterInputTrim === '') {
             return setError('Title is requider')
         }
@@ -34,15 +34,19 @@ export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
     }
 
     return (
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            <TextField label={'Title'} size={"small"} variant={"outlined"}
+        <div>
+            <TextField label='Title'
+                       size={"medium"}
+                       variant={"outlined"}
                        error={!!error}
                        value={filterInput}
-                       helperText={error && <div>{error}</div>}
-                       onChange={onChangeHandler} onKeyDown={keyPressAddItem}/>
-            <IconButton size={"small"}
+                       helperText={error}
+                       onChange={onChangeHandler} onKeyDown={keyPressAddItem}
+            />
+            <IconButton size={"medium"}
                         className={classes.buttonAdd}
-                        onClick={onClickaddItem}><AddCircleTwoTone/></IconButton>
+                        onClick={onClickAddItem}><AddCircleTwoTone/>
+            </IconButton>
 
         </div>
     );
