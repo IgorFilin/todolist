@@ -2,8 +2,8 @@ import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import React from "react";
 import {TasksType} from "../../AppWithRedux";
 import {Checkbox, FormControlLabel, IconButton} from "@material-ui/core";
-import {Add, Delete, Favorite, FavoriteBorder} from "@material-ui/icons";
-import {addNewTaskAC, changeStatusTaskAC, changeTitleTaskAC, deleteTaskAC} from "../../reducers/TasksReducer";
+import {Delete, Favorite, FavoriteBorder} from "@material-ui/icons";
+import {changeStatusTaskAC, changeTitleTaskAC, deleteTaskAC} from "./../../state/TasksReducer";
 import {useDispatch} from "react-redux";
 
 
@@ -12,7 +12,9 @@ type TasksTypeProps = {
     todolistId: string
     tasksNotFound: boolean
 }
-export const Tasks = (props: TasksTypeProps) => {
+export const Tasks = React.memo((props: TasksTypeProps) => {
+
+
     const dispatch = useDispatch()
 
     const onClickHandlerDeleteTask = (id: string, todolistId: string) => {
@@ -43,4 +45,4 @@ export const Tasks = (props: TasksTypeProps) => {
             </IconButton>
         </div>)
     })}</div>)
-}
+})

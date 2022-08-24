@@ -7,7 +7,7 @@ import {
     changeFilterTodolistAC,
     changeTitleTodolistAC,
     deleteTodolistAC
-} from "./reducers/TodolistReducer";
+} from "./state/TodolistReducer";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";

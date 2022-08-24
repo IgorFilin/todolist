@@ -19,7 +19,6 @@ type ChangeTitleTaskAC = ReturnType<typeof changeTitleTaskAC>
 const initialState: TasksStateType = {}
 
 export const TasksReducer = (state: TasksStateType = initialState, action: AllActionCreatorsType): TasksStateType => {
-    debugger
     switch (action.type) {
         case "DELETE-TASK": {
             return {...state, [action.idTodolist]: state[action.idTodolist].filter(task => task.id !== action.idTask)}
@@ -56,7 +55,6 @@ export const TasksReducer = (state: TasksStateType = initialState, action: AllAc
             return copyState
         }
         case "ADD-TODOLIST": {
-            debugger
             return {...state, [action.todolistID]: []}
         }
         default:

@@ -25,7 +25,6 @@ export const TodolistReducer = (state: Array<TodolistsType> = initialState, acti
         }
 
         case "ADD-TODOLIST": {
-            debugger
             return [{id: action.todolistID, title: action.title, filter: 'All'}, ...state]
         }
 

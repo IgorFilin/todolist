@@ -21,7 +21,7 @@ type TodoListPropsType = {
 }
 
 
-export let Todolist = (props: TodoListPropsType) => {
+export let Todolist = React.memo((props: TodoListPropsType) => {
 
 
     const tasks = useSelector<AppRootReducerType, Array<TasksType>>(state => state.tasks[props.todolistId])
@@ -88,5 +88,5 @@ export let Todolist = (props: TodoListPropsType) => {
             </Button>
         </div>
     </div>)
-}
+})
 
