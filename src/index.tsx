@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import {createTheme, CssBaseline, ThemeProvider} from "@material-ui/core";
 import AppWithRedux from "./AppWithRedux";
 import {Provider} from "react-redux";
-import {store} from "./store";
+import {store} from "./state/store";
 
 
 const theme = createTheme({

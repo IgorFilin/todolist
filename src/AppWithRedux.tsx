@@ -11,7 +11,7 @@ import {
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootReducerType} from "./store";
+import {AppRootReducerType} from "./state/store";
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
 export type TodolistsType = {

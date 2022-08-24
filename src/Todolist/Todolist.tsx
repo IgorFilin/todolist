@@ -1,14 +1,14 @@
 import React from "react";
 import classes from './Todolist.module.css'
-import {TasksType, FilterValuesType} from ".././AppWithRedux";
+import {TasksType, FilterValuesType} from "../AppWithRedux";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Tasks} from "./Tasks/Tasks";
 import {Button, IconButton} from "@material-ui/core";
 import {DeleteForever} from "@material-ui/icons";
-import {addNewTaskAC} from "../reducers/TasksReducer";
+import {addNewTaskAC} from "../state/TasksReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootReducerType} from "../store";
+import {AppRootReducerType} from "../state/store";
 
 
 type TodoListPropsType = {
