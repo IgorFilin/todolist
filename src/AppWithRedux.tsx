@@ -3,17 +3,10 @@ import './App.css';
 import {Todolist} from "./Todolist/Todolist";
 import {AddItemForm} from "./AddItemForm/AddItemForm";
 import {
-    addNewTaskAC,
-    changeStatusTaskAC,
-    changeTitleTaskAC,
-    deleteTaskAC, TasksReducer
-} from "./reducers/TasksReducer";
-import {
     addTodolistAC,
     changeFilterTodolistAC,
     changeTitleTodolistAC,
-    deleteTodolistAC,
-    TodolistReducer
+    deleteTodolistAC
 } from "./reducers/TodolistReducer";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
@@ -26,36 +19,22 @@ export type TodolistsType = {
     title: string
     filter: FilterValuesType
 }
-export type arrTasksPropsType = {
+export type TasksType = {
     id: string,
     title: string,
     isDone: boolean
 }
 export type TasksStateType = {
-    [key: string]: Array<arrTasksPropsType>
+    [key: string]: Array<TasksType>
 }
 
 function AppWithRedux() {
 
     const dispatch = useDispatch()
-    const tasks = useSelector<AppRootReducerType, TasksStateType>(state => state.tasks)
     const todolists = useSelector<AppRootReducerType, Array<TodolistsType>>(state => state.todolists)
-
-
-    const deleteTask = (id: string, idTodolist: string) => {
-        dispatch(deleteTaskAC(id, idTodolist))
-    }
 
     const changeFilter = (isDoneStatus: FilterValuesType, todolistId: string) => {
         dispatch(changeFilterTodolistAC(isDoneStatus, todolistId))
-    }
-
-    const addNewTask = (titleTask: string, idTodolist: string) => {
-        dispatch(addNewTaskAC(titleTask, idTodolist))
-    }
-
-    const changeStatusTask = (id: string, isDone: boolean, idTodolist: string) => {
-        dispatch(changeStatusTaskAC(id, isDone, idTodolist))
     }
 
     const deleleTodolist = (idTodolist: string) => {
@@ -71,24 +50,16 @@ function AppWithRedux() {
     const changeTitleTodolist = (title: string, idtodolist: string) => {
         dispatch(changeTitleTodolistAC(title, idtodolist))
     }
-    const changeTitleTask = (title: string, id: string, idTodolist: string) => {
-        dispatch(changeTitleTaskAC(title, id, idTodolist))
-    }
+
     const mappingTodolists = todolists.map(t => {
-        let arrayTasks = tasks[t.id]
         return (<Grid key={t.id} item>
             <Paper style={{padding: '5px 10px 10px 10px'}}>
                 <Todolist deleleTodolist={deleleTodolist}
                           todolistId={t.id}
                           title={t.title}
-                          tasks={arrayTasks}
-                          deleteTask={deleteTask}
                           changeFilter={changeFilter}
-                          addNewTask={addNewTask}
-                          addCheckedTask={changeStatusTask}
                           filter={t.filter}
                           changeTitleTodolist={changeTitleTodolist}
-                          changeTitleTaks={changeTitleTask}
                 />
             </Paper>
         </Grid>)

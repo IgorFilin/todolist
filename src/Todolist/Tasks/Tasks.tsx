@@ -1,30 +1,29 @@
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import React from "react";
-import {arrTasksPropsType} from "../../AppWithRedux";
+import {TasksType} from "../../AppWithRedux";
 import {Checkbox, FormControlLabel, IconButton} from "@material-ui/core";
 import {Add, Delete, Favorite, FavoriteBorder} from "@material-ui/icons";
+import {addNewTaskAC, changeStatusTaskAC, changeTitleTaskAC, deleteTaskAC} from "../../reducers/TasksReducer";
+import {useDispatch} from "react-redux";
 
 
 type TasksTypeProps = {
-    filteredTasks: Array<arrTasksPropsType>
+    filteredTasks: Array<TasksType>
     todolistId: string
-    deleteTask: (id: string, todolistId: string) => void
-    addCheckedTask: (id: string, isDoneValue: boolean, idTodolist: string) => void
-    changeTitleTaks: (titleTask: string, id: string, idTodolist: string) => void
     tasksNotFound: boolean
 }
 export const Tasks = (props: TasksTypeProps) => {
-
+    const dispatch = useDispatch()
 
     const onClickHandlerDeleteTask = (id: string, todolistId: string) => {
-        props.deleteTask(id, todolistId)
+        dispatch(deleteTaskAC(id, props.todolistId))
     }
 
     const onChangeCheckHandler = (id: string, isDone: boolean, idTodolist: string) => {
-        props.addCheckedTask(id, isDone, idTodolist)
+        dispatch(changeStatusTaskAC(id, isDone, idTodolist))
     }
     const changeTitleTask = (title: string, id: string) => {
-        props.changeTitleTaks(title, id, props.todolistId)
+        dispatch(changeTitleTaskAC(title, id, props.todolistId))
     }
 
     return (<div>{props.tasksNotFound ? <h4>Tasks not found</h4> : props.filteredTasks.map((t) => {
