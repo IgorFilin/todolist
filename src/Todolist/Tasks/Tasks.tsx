@@ -1,7 +1,6 @@
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
-import classes from "../Todolist.module.css";
 import React from "react";
-import {arrTasksPropsType} from "../../App";
+import {arrTasksPropsType} from "../../AppWithRedux";
 import {Checkbox, FormControlLabel, IconButton} from "@material-ui/core";
 import {Add, Delete, Favorite, FavoriteBorder} from "@material-ui/icons";
 

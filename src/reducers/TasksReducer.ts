@@ -1,6 +1,6 @@
-import {TasksStateType} from "../App";
+import {TasksStateType} from "../AppWithRedux";
 import {v1} from "uuid";
-import {AddTodolistACType, DeleteTodolistACType} from "./TodolistReducer";
+import {AddTodolistACType, DeleteTodolistACType, todolist1, todolist2} from "./TodolistReducer";
 
 
 type AllActionCreatorsType =
@@ -16,15 +16,39 @@ type ChangeStatusTaskType = ReturnType<typeof changeStatusTaskAC>
 type ChangeTitleTaskAC = ReturnType<typeof changeTitleTaskAC>
 
 
-export const TasksReducer = (state: TasksStateType, action: AllActionCreatorsType): TasksStateType => {
+const initialState: TasksStateType = {
+    [todolist1]: [
+        {id: v1(), title: "HTML", isDone: true},
+        {id: v1(), title: "CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "ReactJS", isDone: false},
+        {id: v1(), title: "Redux", isDone: false}
+    ],
+    [todolist2]: [
+        {id: v1(), title: "Meat", isDone: false},
+        {id: v1(), title: "Milk", isDone: false},
+        {id: v1(), title: "Book", isDone: true},
+        {id: v1(), title: "VideoGame", isDone: false},
+        {id: v1(), title: "VideoFilm", isDone: false}
+    ]
+
+
+}
+
+export const TasksReducer = (state: TasksStateType = initialState, action: AllActionCreatorsType): TasksStateType => {
+    debugger
     switch (action.type) {
-        case"DELETE-TASK":
+        case "DELETE-TASK": {
             return {...state, [action.idTodolist]: state[action.idTodolist].filter(task => task.id !== action.idTask)}
-        case "ADD-TASK":
+        }
+
+        case "ADD-TASK": {
             return {
                 ...state,
                 [action.idTodolist]: [{id: v1(), title: action.titleTask, isDone: false}, ...state[action.idTodolist]]
             }
+        }
+
         case "CHANGE-STATUS-TASK": {
             return {
                 ...state,
@@ -49,6 +73,7 @@ export const TasksReducer = (state: TasksStateType, action: AllActionCreatorsTyp
             return copyState
         }
         case "ADD-TODOLIST": {
+            debugger
             return {...state, [action.todolistID]: []}
         }
         default:
@@ -66,6 +91,6 @@ export const addNewTaskAC = (titleTask: string, idTodolist: string) => {
 export const changeStatusTaskAC = (idTask: string, statusTask: boolean, idTodolist: string) => {
     return {type: 'CHANGE-STATUS-TASK', idTask, statusTask, idTodolist} as const
 }
-export const changeTitleTaskAC = (id: string, title: string, idTodolist: string) => {
-    return {type: 'CHANGE-TITLE-TASK', title, id, idTodolist} as const
+export const changeTitleTaskAC = (title: string, id: string, idTodolist: string) => {
+    return {type: 'CHANGE-TITLE-TASK', id, title, idTodolist} as const
 }

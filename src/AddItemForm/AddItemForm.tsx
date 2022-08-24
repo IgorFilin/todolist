@@ -9,7 +9,6 @@ type AddItemFormType = {
 }
 
 export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
-    debugger
     let [filterInput, setFilterInput] = useState("")
     let [error, setError] = useState<string | null>(null)
     let filterInputTrim = filterInput.trim()

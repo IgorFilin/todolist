@@ -34,7 +34,7 @@ export type TasksStateType = {
     [key: string]: Array<arrTasksPropsType>
 }
 
-function App() {
+function AppWithReducers() {
     let todolist1 = v1()
     let todolist2 = v1()
     let [tasks, dispatchTasks] = useReducer(TasksReducer, {
@@ -60,6 +60,8 @@ function App() {
         {id: todolist1, title: 'What to learn', filter: 'All'},
         {id: todolist2, title: 'What to buy', filter: 'All'}
     ])
+
+
     const deleteTask = (id: string, idTodolist: string) => {
         dispatchTasks(deleteTaskAC(id, idTodolist))
     }
@@ -82,8 +84,9 @@ function App() {
     }
 
     const addTodolist = (title: string) => {
-        dispatchTodolist(addTodolistAC(title))
-        dispatchTasks(addTodolistAC(title))
+        let action = addTodolistAC(title)
+        dispatchTodolist(action)
+        dispatchTasks(action)
     }
 
     const changeTitleTodolist = (title: string, idtodolist: string) => {
@@ -139,4 +142,4 @@ function App() {
 }
 
 
-export default App;
+export default AppWithReducers;
