@@ -16,24 +16,7 @@ type ChangeStatusTaskType = ReturnType<typeof changeStatusTaskAC>
 type ChangeTitleTaskAC = ReturnType<typeof changeTitleTaskAC>
 
 
-const initialState: TasksStateType = {
-    [todolist1]: [
-        {id: v1(), title: "HTML", isDone: true},
-        {id: v1(), title: "CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "Redux", isDone: false}
-    ],
-    [todolist2]: [
-        {id: v1(), title: "Meat", isDone: false},
-        {id: v1(), title: "Milk", isDone: false},
-        {id: v1(), title: "Book", isDone: true},
-        {id: v1(), title: "VideoGame", isDone: false},
-        {id: v1(), title: "VideoFilm", isDone: false}
-    ]
-
-
-}
+const initialState: TasksStateType = {}
 
 export const TasksReducer = (state: TasksStateType = initialState, action: AllActionCreatorsType): TasksStateType => {
     debugger

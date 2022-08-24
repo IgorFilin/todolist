@@ -11,10 +11,7 @@ export type ChangeTitleTodolistACType = ReturnType<typeof changeTitleTodolistAC>
 export let todolist1 = v1()
 export let todolist2 = v1()
 
-const initialState: Array<TodolistsType> = [
-    {id: todolist1, title: 'What to learn', filter: 'All'},
-    {id: todolist2, title: 'What to buy', filter: 'All'}
-]
+const initialState: Array<TodolistsType> = []
 
 
 export const TodolistReducer = (state: Array<TodolistsType> = initialState, action: ActionsType): Array<TodolistsType> => {
