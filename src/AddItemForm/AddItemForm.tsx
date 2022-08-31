@@ -8,7 +8,8 @@ type AddItemFormType = {
     addItem: (t: string) => void
 }
 
-export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
+export const AddItemForm: React.FC<AddItemFormType> = React.memo(({addItem}) => {
+    console.log('render addItemForm')
     let [filterInput, setFilterInput] = useState("")
     let [error, setError] = useState<string | null>(null)
     let filterInputTrim = filterInput.trim()
@@ -49,5 +50,5 @@ export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
 
         </div>
     );
-};
+});
 
