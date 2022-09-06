@@ -32,6 +32,7 @@ export const TasksReducer = (state: TasksStateType = initialState, action: AllAc
         }
 
         case "CHANGE-STATUS-TASK": {
+      
             return {
                 ...state,
                 [action.idTodolist]: state[action.idTodolist].map(t => t.id === action.idTask ? {
@@ -70,6 +71,7 @@ export const addNewTaskAC = (titleTask: string, idTodolist: string) => {
     return {type: 'ADD-TASK', titleTask, idTodolist} as const
 }
 export const changeStatusTaskAC = (idTask: string, statusTask: boolean, idTodolist: string) => {
+
     return {type: 'CHANGE-STATUS-TASK', idTask, statusTask, idTodolist} as const
 }
 export const changeTitleTaskAC = (title: string, id: string, idTodolist: string) => {

@@ -3,12 +3,13 @@ import classes from './Todolist.module.css'
 import {TasksType, FilterValuesType} from "../AppWithRedux";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
-import {Tasks} from "./Tasks/Tasks";
+
 import {Button, IconButton} from "@material-ui/core";
 import {DeleteForever} from "@material-ui/icons";
 import {addNewTaskAC} from "../state/TasksReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootReducerType} from "../state/store";
+import {Task} from "./Task/Task";
 
 
 type TodoListPropsType = {
@@ -32,10 +33,9 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
     }, [props.todolistId, props.changeFilter])
 
 
-    const onClickHandlerTodolistDelete = (todolistId: string) => {
+    const onClickHandlerTodolistDelete = useCallback((todolistId: string) => {
         props.deleleTodolist(todolistId)
-    }
-
+    }, [props.deleleTodolist])
 
     const changeTitleTodolist = useCallback((title: string) => {
         props.changeTitleTodolist(title, props.todolistId)
@@ -68,10 +68,15 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
         <div style={{display: 'flex', justifyContent: 'center'}}>
             <AddItemForm addItem={addTask}/>
         </div>
-        <Tasks filteredTasks={filteredTasks}
-               todolistId={props.todolistId}
-               tasksNotFound={tasksNotFound}
-        />
+        <div>
+            {tasksNotFound ? <h4>Tasks not found</h4> : filteredTasks.map((t) => <Task
+                todolistId={props.todolistId}
+                taskId={t.id}
+                title={t.title}
+                isDone={t.isDone}
+                key={t.id}
+            />)}
+        </div>
         <div style={{textAlign: 'center'}}>
             <Button color={props.filter === 'All' ? "secondary" : "default"} size={"small"} variant={"contained"}
                     onClick={useCallback(() => onClickChangeHandler('All', props.todolistId), [props.todolistId])}>All

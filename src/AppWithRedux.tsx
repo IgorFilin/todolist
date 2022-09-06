@@ -2,16 +2,12 @@ import React, {useCallback} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist/Todolist";
 import {AddItemForm} from "./AddItemForm/AddItemForm";
-import {
-    addTodolistAC,
-    changeFilterTodolistAC,
-    changeTitleTodolistAC,
-    deleteTodolistAC
-} from "./state/TodolistReducer";
+import {addTodolistAC, changeFilterTodolistAC, changeTitleTodolistAC, deleteTodolistAC} from "./state/TodolistReducer";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootReducerType} from "./state/store";
+import {AppBarComponent} from "./AppBar";
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
 export type TodolistsType = {
@@ -66,17 +62,7 @@ function AppWithRedux() {
     })
 
     return (<div className="App">
-        <AppBar position="static">
-            <Toolbar style={{justifyContent: "space-between"}}>
-                <IconButton edge="start" color="secondary" aria-label="menu">
-                    <Menu/>
-                </IconButton>
-                <Typography variant="h5">
-                    Todolists
-                </Typography>
-                <Button color="inherit" variant={"outlined"}>Logout</Button>
-            </Toolbar>
-        </AppBar>
+        <AppBarComponent/>
         <Container fixed>
             <Grid container style={{paddingTop: '20px', paddingBottom: '20px'}}>
                 <AddItemForm addItem={addTodolist}/>
