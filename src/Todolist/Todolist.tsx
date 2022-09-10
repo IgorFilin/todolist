@@ -17,7 +17,7 @@ type TodoListPropsType = {
     changeFilter: (valueFilter: FilterValuesType, todolistId: string) => void
     filter: FilterValuesType
     todolistId: string
-    deleleTodolist: (todolistId: string) => void
+    deleteTodolist: (todolistId: string) => void
     changeTitleTodolist: (titleTodolist: string, todolistId: string) => void
 }
 
@@ -34,8 +34,8 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
 
 
     const onClickHandlerTodolistDelete = useCallback((todolistId: string) => {
-        props.deleleTodolist(todolistId)
-    }, [props.deleleTodolist])
+        props.deleteTodolist(todolistId)
+    }, [props.deleteTodolist])
 
     const changeTitleTodolist = useCallback((title: string) => {
         props.changeTitleTodolist(title, props.todolistId)

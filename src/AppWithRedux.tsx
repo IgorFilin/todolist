@@ -50,7 +50,7 @@ function AppWithRedux() {
     const mappingTodolists = todolists.map(t => {
         return (<Grid key={t.id} item>
             <Paper style={{padding: '5px 10px 10px 10px'}}>
-                <Todolist deleleTodolist={deleleTodolist}
+                <Todolist deleteTodolist={deleleTodolist}
                           todolistId={t.id}
                           title={t.title}
                           changeFilter={changeFilter}
