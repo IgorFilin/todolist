@@ -24,7 +24,7 @@ export const createTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
         const todolistId = '1ebbddc7-e782-41a1-8288-5779e61816cf'
-        tasksApi.createTask(todolistId, 'new task')
+        tasksApi.createTask(todolistId, 'new task2')
             .then(resolve => {
                 setState(resolve.data)
             })
@@ -36,8 +36,8 @@ export const updateTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
         const todolistId = '1ebbddc7-e782-41a1-8288-5779e61816cf'
-        const taskId = '5eb35851-0ba5-4d32-8a59-f4ed5a7d96d0'
-        tasksApi.updateTask(todolistId, taskId, 'updated task')
+        const taskId = 'cc82380f-8105-41c3-bd6f-fb989ccf3976'
+        tasksApi.updateTask(todolistId, taskId)
             .then(resolve => {
                 setState(resolve.data)
             })
@@ -49,7 +49,7 @@ export const deleteTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
         const todolistId = '1ebbddc7-e782-41a1-8288-5779e61816cf'
-        const taskId = '5eb35851-0ba5-4d32-8a59-f4ed5a7d96d0'
+        const taskId = 'ea18a950-1c2f-44b2-892a-ee29803528cc'
         tasksApi.deleteTask(todolistId, taskId)
             .then(resolve => {
                 setState(resolve.data)
