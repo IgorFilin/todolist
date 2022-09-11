@@ -1,6 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from 'react'
-import {tasksApi, updateTaskType} from "../../api/tasks-api";
-import axios from "axios";
+import {tasksApi, updateTaskType} from "../api/tasks-api";
 
 
 export default {
@@ -10,15 +9,24 @@ export default {
 
 export const getTasks = () => {
     const [state, setState] = useState<any>(null)
-    useEffect(() => {
-        const todolistId = '1ebbddc7-e782-41a1-8288-5779e61816cf'
-        tasksApi.getTasks(todolistId)
-            .then(resolve => {
-                setState(resolve.data.items)
-            })
-    }, [])
+    const [todolistId, setTodolistId,] = useState<any>(null)
 
-    return <div> {JSON.stringify(state)}</div>
+    const onChangeHandlerGetTasks = (e: ChangeEvent<HTMLInputElement>) => {
+        setTodolistId(e.currentTarget.value)
+    }
+    const onClickHandler = () => {
+        tasksApi.getTasks(todolistId)
+            .then(response => setState(response.data))
+    }
+    return (
+        <div>
+            {JSON.stringify(state)}
+            <div>
+                <input type="text" onChange={onChangeHandlerGetTasks}/>
+                <button onClick={onClickHandler}>Get Tasks</button>
+            </div>
+        </div>
+    )
 }
 export const createTask = () => {
     const [state, setState] = useState<any>(null)
