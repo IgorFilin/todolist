@@ -49,7 +49,7 @@ type createTaskApiType = {
     "fieldsErrors": Array<string>
     "resultCode": number
 }
-type updateTaskType = {
+export type updateTaskType = {
     title: string
     description: string
     completed: boolean
@@ -59,15 +59,7 @@ type updateTaskType = {
     deadline: string
 }
 
-const updateTaskModel:updateTaskType = {
-    title: 'updated task',
-    description: '',
-    completed: true,
-    status: 2,
-    priority: 1,
-    startDate:'',
-    deadline: ''
-}
+
 export const tasksApi = {
     getTasks(todolistId: string) {
         return instance.get<getTasksApiType>(`todo-lists/${todolistId}/tasks`)
@@ -77,7 +69,7 @@ export const tasksApi = {
         return instance.post<createTaskApiType>(`todo-lists/${todolistId}/tasks`, {title})
 
     },
-    updateTask(todolistId: string, taskId: string) {
+    updateTask(todolistId: string, taskId: string,updateTaskModel:updateTaskType) {
         return instance.put<updateTaskType>(`todo-lists/${todolistId}/tasks/${taskId}`, updateTaskModel, settings)
 
     },
