@@ -60,15 +60,23 @@ export const updateTask = () => {
     const [todolistId, setTodolistId] = useState<any>(null)
     const [taskId, setTaskId] = useState<any>(null)
 
-    const updateTaskModel:updateTaskType = {
-        title: 'my perfect updated task',
-        description: '',
-        completed: true,
-        status: 2,
-        priority: 1,
-        startDate:'',
-        deadline: ''
-    }
+    const [title, setTitle] = useState<any>('')
+    const [description, setDescription] = useState<any>('')
+    const [completed, setCompleted] = useState<any>(false)
+    const [status, setStatus] = useState<any>(0)
+    const [priority, setPriority] = useState<any>(0)
+    const [startDate, setStartDate] = useState<any>('')
+    const [deadline, setDeadline] = useState<any>('')
+
+    // const updateTaskModel: updateTaskType = {
+    //     title: 'my perfect updated task',
+    //     description: '',
+    //     completed: true,
+    //     status: 2,
+    //     priority: 1,
+    //     startDate: '',
+    //     deadline: ''
+    // }
 
     const onChangeHandlerTodolistId = (e: ChangeEvent<HTMLInputElement>) => {
         setTodolistId(e.currentTarget.value)
@@ -77,7 +85,7 @@ export const updateTask = () => {
         setTaskId(e.currentTarget.value)
     }
     const onClickHandler = () => {
-        tasksApi.updateTask(todolistId,taskId,updateTaskModel)
+        tasksApi.updateTask(todolistId, taskId, {title,completed,deadline,description,status,priority,startDate})
             .then(response => setState(response.data))
     }
 
@@ -87,10 +95,23 @@ export const updateTask = () => {
             <div>
                 <input value={todolistId} onChange={onChangeHandlerTodolistId} placeholder={'todolist id'}/>
                 <input value={taskId} onChange={onChangeHandlerTaskId} placeholder={'task id'}/>
+                <input type="title" onChange={(e)=> setTitle(e.currentTarget.value)} placeholder={'title'}/>
+                <div>
+                    <input type="text" onChange={(e)=> setStartDate(e.currentTarget.value)}  placeholder={'startDate'}/>
+                    <input type="text" onChange={(e)=> setDescription(e.currentTarget.value)}  placeholder={'description'}/>
+                    <input type="text" onChange={(e)=> setCompleted(e.currentTarget.value)}  placeholder={'completed'}/>
+                </div>
+                <div>
+                    <input type="number" onChange={(e)=> setStatus(e.currentTarget.value)}  placeholder={'status'}/>
+                    <input type="number" onChange={(e)=> setPriority(e.currentTarget.value)}  placeholder={'priority'}/>
+                    <input type="text" onChange={(e)=> setDeadline(e.currentTarget.value)}   placeholder={'deadline'}/>
+                </div>
+
                 <button onClick={onClickHandler}>Update task</button>
             </div>
             <div>
-                <textarea style={{width:'400px',height:'100px'}} placeholder={'for save value id todo and id task'}></textarea>
+                <textarea style={{width: '400px', height: '100px'}}
+                          placeholder={'for save value id todo and id task'}></textarea>
             </div>
         </div>
     )
@@ -107,7 +128,7 @@ export const deleteTask = () => {
         setTaskId(e.currentTarget.value)
     }
     const onClickHandler = () => {
-        tasksApi.deleteTask(todolistId,taskId)
+        tasksApi.deleteTask(todolistId, taskId)
             .then(response => setState(response.data))
     }
 
@@ -120,7 +141,8 @@ export const deleteTask = () => {
                 <button onClick={onClickHandler}>Delete task</button>
             </div>
             <div>
-                <textarea style={{width:'400px',height:'100px'}} placeholder={'for save value id todo and id task'}></textarea>
+                <textarea style={{width: '400px', height: '100px'}}
+                          placeholder={'for save value id todo and id task'}></textarea>
             </div>
         </div>
     )
