@@ -11,43 +11,55 @@ const instance  = axios.create({
     baseURL:'https://social-network.samuraijs.com/api/1.1/',
     ...settings
 })
-
-type TaskApiType = {
-    "id": "5eb35851-0ba5-4d32-8a59-f4ed5a7d96d0",
-    "title": string
-    "description": string
-    "todoListId": string
-    "order": number
-    "status": number
-    "priority": number
-    "startDate": string
-    "deadline": string
-    "addedDate": string
+export enum TaskStatuses {
+    New = 0,
+    inProgress = 1,
+    Completed = 2,
+    Draft = 3
+}
+export enum TodoTaskPriorities {
+    Low = 0,
+    Middle = 1,
+    Hi = 2,
+    Urgently = 3,
+    Later = 4
+}
+export type TasksType = {
+    id: string,
+    title: string
+    description: string
+    todoListId: string
+    order: number
+    status: TaskStatuses
+    priority: TodoTaskPriorities
+    startDate: string
+    deadline: string
+    addedDate: string
 }
 
-type getTasksApiType = {
-    items: Array<TaskApiType>
+type getTasksType = {
+    items: Array<TasksType>
     totalCount: number
     error: string | null
 }
-type createTaskApiType = {
-    "data": {
-        "item": {
-            "id": string
-            "title": string
-            "description": null | string
-            "todoListId": string
-            "order": number
-            "status": number
-            "priority": number
-            "startDate": null | string
-            "deadline": null | string
-            "addedDate": string
+type createTaskType = {
+    data: {
+        item: {
+            id: string
+            title: string
+            description: null | string
+            todoListId: string
+            order: number
+            status: number
+            priority: number
+            startDate: null | string
+            deadline: null | string
+            addedDate: string
         }
     },
-    "messages": Array<string>
-    "fieldsErrors": Array<string>
-    "resultCode": number
+    messages: Array<string>
+    fieldsErrors: Array<string>
+    resultCode: number
 }
 export type updateTaskType = {
     title: string
@@ -62,11 +74,11 @@ export type updateTaskType = {
 
 export const tasksApi = {
     getTasks(todolistId: string) {
-        return instance.get<getTasksApiType>(`todo-lists/${todolistId}/tasks`)
+        return instance.get<getTasksType>(`todo-lists/${todolistId}/tasks`)
 
     },
     createTask(todolistId: string, title: string) {
-        return instance.post<ResponseType<createTaskApiType>>(`todo-lists/${todolistId}/tasks`, {title})
+        return instance.post<ResponseType<createTaskType>>(`todo-lists/${todolistId}/tasks`, {title})
 
     },
     updateTask(todolistId: string, taskId: string,updateTaskModel:updateTaskType) {

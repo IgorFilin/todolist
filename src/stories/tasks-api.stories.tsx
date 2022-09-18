@@ -68,15 +68,7 @@ export const updateTask = () => {
     const [startDate, setStartDate] = useState<any>('')
     const [deadline, setDeadline] = useState<any>('')
 
-    // const updateTaskModel: updateTaskType = {
-    //     title: 'my perfect updated task',
-    //     description: '',
-    //     completed: true,
-    //     status: 2,
-    //     priority: 1,
-    //     startDate: '',
-    //     deadline: ''
-    // }
+
 
     const onChangeHandlerTodolistId = (e: ChangeEvent<HTMLInputElement>) => {
         setTodolistId(e.currentTarget.value)

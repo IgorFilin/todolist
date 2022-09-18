@@ -9,7 +9,6 @@ type AddItemFormType = {
 }
 
 export const AddItemForm: React.FC<AddItemFormType> = React.memo(({addItem}) => {
-    console.log('render addItemForm')
     let [filterInput, setFilterInput] = useState("")
     let [error, setError] = useState<string | null>(null)
     let filterInputTrim = filterInput.trim()
