@@ -16,7 +16,7 @@ export const getTasks = () => {
     }
     const onClickHandler = () => {
         tasksApi.getTasks(todolistId)
-            .then(response => setState(response.data))
+            .then(item => setState(item))
     }
     return (
         <div>

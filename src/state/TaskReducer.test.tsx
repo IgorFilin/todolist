@@ -1,6 +1,13 @@
-import {addNewTaskAC, changeStatusTaskAC, changeTitleTaskAC, deleteTaskAC, TasksReducer} from "./TasksReducer";
-import {addTodolistAC, deleteTodolistAC} from "./TodolistReducer";
-import {TasksStateType} from "../AppWithRedux";
+import {
+    addNewTaskAC,
+    changeStatusTaskAC,
+    changeTitleTaskAC,
+    deleteTaskAC,
+    setTaskAC,
+    TasksReducer
+} from "./TasksReducer";
+import {addTodolistAC, deleteTodolistAC, setTodolistAC} from "./TodolistReducer";
+import {TasksStateType} from "./TasksReducer";
 
 let startState: TasksStateType = {}
 beforeEach(() => {
@@ -89,6 +96,33 @@ test('property with todolistId should be deleted', () => {
 
     expect(keys.length).toBe(1);
     expect(endState["todolistId2"]).not.toBeDefined();
+});
+test('new array should be added when set todolists', () => {
+
+    const action = setTodolistAC([{id: 'todolistId1', title: "What to learn",  addedDate: '', order: 0},
+        {id: 'todolistId2', title: "What to buy", addedDate: '', order: 0}]);
+
+    const endState = TasksReducer({}, action)
+    let keys = Object.keys(endState)
+
+    expect(endState['todolistId1']).toStrictEqual([]);
+    expect(keys.length).toEqual(2);
+});
+test('new array with tasks should be set todolist', () => {
+
+
+    const arrayTasks = [
+        {id: "1", title: "CSS", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1'},
+        {id: "2", title: "JS", status: 2,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1'},
+        {id: "3", title: "React", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1'}
+    ]
+    const action = setTaskAC(arrayTasks,'todolistId1');
+
+    const endState = TasksReducer({}, action)
+    let keys = Object.keys(endState)
+
+    expect(endState['todolistId1']).toStrictEqual(arrayTasks);
+    expect(keys.length).toEqual(1);
 });
 
 

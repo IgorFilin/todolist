@@ -1,27 +1,32 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist/Todolist";
 import {AddItemForm} from "./AddItemForm/AddItemForm";
-import {addTodolistAC, changeFilterTodolistAC, changeTitleTodolistAC, deleteTodolistAC} from "./state/TodolistReducer";
+import {
+    addTodolistAC,
+    changeFilterTodolistAC,
+    changeTitleTodolistAC,
+    deleteTodolistAC, fetchTodolistsThunkCreator, FilterValuesType,
+    TodolistDomainType
+} from "./state/TodolistReducer";
 import {Container, Grid, Paper} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootReducerType} from "./state/store";
 import {AppBarComponent} from "./AppBarComponent";
-import {TasksType} from "./api/tasks-api";
-import {TodolistsType} from "./api/todolists-api";
-
-export type FilterValuesType = 'All' | 'Active' | 'Completed'
 
 
-export type TasksStateType = {
-    [key: string]: Array<TasksType>
-}
-export type TodolistDomainType = TodolistsType & {
-    filter:FilterValuesType
-}
+
+
+
 function AppWithRedux() {
     const dispatch = useDispatch()
     const todolists = useSelector<AppRootReducerType, Array<TodolistDomainType>>(state => state.todolists)
+
+
+    useEffect(() =>{
+        // @ts-ignore
+        dispatch(fetchTodolistsThunkCreator())
+    } ,[])
 
     const changeFilter = useCallback((status: FilterValuesType, todolistId: string) => {
         dispatch(changeFilterTodolistAC(status, todolistId))
