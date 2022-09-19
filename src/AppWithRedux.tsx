@@ -3,11 +3,9 @@ import './App.css';
 import {Todolist} from "./Todolist/Todolist";
 import {AddItemForm} from "./AddItemForm/AddItemForm";
 import {
-    addTodolistAC,
-    changeFilterTodolistAC,
-    changeTitleTodolistAC,
-    deleteTodolistAC, fetchTodolistsThunkCreator, FilterValuesType,
-    TodolistDomainType
+    changeFilterTodolistAC, createTodolistsThunkCreator,
+    deleteTodolistAC, deleteTodolistsThunkCreator, fetchTodolistsThunkCreator, FilterValuesType,
+    TodolistDomainType, updateTodolistsThunkCreator
 } from "./state/TodolistReducer";
 import {Container, Grid, Paper} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
@@ -33,17 +31,19 @@ function AppWithRedux() {
     }, [dispatch])
 
     const deleteTodolist = useCallback((idTodolist: string) => {
-        dispatch(deleteTodolistAC(idTodolist))
+        // @ts-ignore
+        dispatch(deleteTodolistsThunkCreator(idTodolist))
     }, [dispatch])
 
-    const addTodolist = useCallback((title: string) => {
-        let action = addTodolistAC(title)
-        dispatch(action)
+    const createTodolist = useCallback((title: string) => {
+        // @ts-ignore
+        dispatch(createTodolistsThunkCreator(title))
 
     }, [dispatch])
 
-    const changeTitleTodolist = useCallback((title: string, idTodolist: string) => {
-        dispatch(changeTitleTodolistAC(title, idTodolist))
+    const changeTitleTodolist = useCallback((title: string, todolistId: string) => {
+        // @ts-ignore
+        dispatch(updateTodolistsThunkCreator(todolistId,title))
     }, [dispatch])
 
     const mappingTodolists = todolists.map(t => {
@@ -64,7 +64,7 @@ function AppWithRedux() {
         <AppBarComponent/>
         <Container fixed>
             <Grid container style={{paddingTop: '20px', paddingBottom: '20px'}}>
-                <AddItemForm addItem={addTodolist}/>
+                <AddItemForm addItem={createTodolist}/>
             </Grid>
             <Grid container spacing={5}>
                 {mappingTodolists}

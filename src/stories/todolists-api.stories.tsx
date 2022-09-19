@@ -26,7 +26,7 @@ export const CreateTodolist = () => {
     }
     const onClickHandler = () => {
         todolistsApi.createTodolist(title)
-            .then(response => setState(response.data))
+            .then(item => setState(item))
     }
 
     return (

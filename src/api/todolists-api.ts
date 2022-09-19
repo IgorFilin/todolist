@@ -3,7 +3,7 @@ import axios from "axios";
 const settings = {
     withCredentials: true,
     headers: {
-        'API-KEY': '3ed5f5a0-3248-4e8c-b1bc-946bac413eb7'
+        'API-KEY': '523f3afc-9394-4d5e-8a49-5b44c559d911'
     }
 }
 
@@ -34,7 +34,7 @@ export const todolistsApi = {
     },
     createTodolist(title:string) {
         return instance.post<ResponseType<{item: TodolistsType}>>('/todo-lists', {title})
-
+            .then(response => response.data.data)
     },
     deleteTodolist(todolistId:string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`)

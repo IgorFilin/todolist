@@ -5,11 +5,11 @@ import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {DeleteForever} from "@material-ui/icons";
-import {addNewTaskAC, fetchTasksThunkCreator} from "../state/TasksReducer";
+import {createTaskThunkCreator, fetchTasksThunkCreator} from "../state/TasksReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootReducerType} from "../state/store";
 import {Task} from "./Task/Task";
-import {TaskStatuses, TasksType} from "../api/tasks-api";
+import {TaskStatuses, TaskType} from "../api/tasks-api";
 
 
 type TodoListPropsType = {
@@ -23,7 +23,7 @@ type TodoListPropsType = {
 
 
 export let Todolist = React.memo((props: TodoListPropsType) => {
-    const tasks = useSelector<AppRootReducerType, Array<TasksType>>(state => state.tasks[props.todolistId])
+    const tasks = useSelector<AppRootReducerType, Array<TaskType>>(state => state.tasks[props.todolistId])
     const dispatch = useDispatch()
 
     useEffect(()=>{
@@ -44,8 +44,9 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
         props.changeTitleTodolist(title, props.todolistId)
     }, [props.changeTitleTodolist, props.todolistId])
 
-    const addTask = useCallback((titleTask: string) => {
-        dispatch(addNewTaskAC(titleTask, props.todolistId))
+    const createTask = useCallback((titleTask: string) => {
+        // @ts-ignore
+        dispatch(createTaskThunkCreator(props.todolistId,titleTask))
     }, [dispatch])
 
     let filteredTasks = tasks
@@ -69,7 +70,7 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
             </IconButton>
         </h2>
         <div style={{display: 'flex', justifyContent: 'center'}}>
-            <AddItemForm addItem={addTask}/>
+            <AddItemForm addItem={createTask}/>
         </div>
         <div>
             {tasksNotFound ? <h4>Tasks not found</h4> : filteredTasks.map((t) => <Task

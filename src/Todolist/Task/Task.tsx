@@ -1,9 +1,9 @@
 import {Checkbox, FormControlLabel, IconButton} from "@material-ui/core";
 import {Delete, Favorite, FavoriteBorder} from "@material-ui/icons";
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
-import React, {ChangeEvent, useCallback, useEffect} from "react";
+import React, {ChangeEvent, useCallback} from "react";
 import {useDispatch} from "react-redux";
-import {changeStatusTaskAC, changeTitleTaskAC, deleteTaskAC, fetchTasksThunkCreator} from "../../state/TasksReducer";
+import {deleteTaskThunkCreator, updateTaskAC, updateTaskThunkCreator} from "../../state/TasksReducer";
 import {TaskStatuses} from "../../api/tasks-api";
 
 export type TaskPropsType = {
@@ -16,16 +16,19 @@ export const Task = React.memo(({taskId, status, todolistId, title}: TaskPropsTy
     const dispatch = useDispatch()
 
     const onClickHandlerDeleteTask = useCallback(() => {
-        dispatch(deleteTaskAC(taskId, todolistId))
+        // @ts-ignore
+        dispatch(deleteTaskThunkCreator(todolistId, taskId))
     }, [dispatch])
 
     const onChangeCheckHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const statusTask = e.currentTarget.checked
-        dispatch(changeStatusTaskAC(taskId, statusTask ? TaskStatuses.Completed : TaskStatuses.New, todolistId))
+        // @ts-ignore
+        dispatch(updateTaskThunkCreator(todolistId,taskId, {status:statusTask ? TaskStatuses.Completed : TaskStatuses.New}))
     }, [dispatch])
 
     const changeTitleTask = useCallback((newTitle: string) => {
-        dispatch(changeTitleTaskAC(newTitle, taskId, todolistId))
+        // @ts-ignore
+        dispatch(updateTaskThunkCreator(todolistId,taskId, {title:newTitle}))
     }, [dispatch])
 
     return <div style={status === TaskStatuses.Completed? {
