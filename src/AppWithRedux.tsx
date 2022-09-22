@@ -9,7 +9,7 @@ import {
 } from "./state/TodolistReducer";
 import {Container, Grid, Paper} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootReducerType} from "./state/store";
+import {AppDispatch, AppRootReducerType} from "./state/store";
 import {AppBarComponent} from "./AppBarComponent";
 
 
@@ -17,12 +17,11 @@ import {AppBarComponent} from "./AppBarComponent";
 
 
 function AppWithRedux() {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     const todolists = useSelector<AppRootReducerType, Array<TodolistDomainType>>(state => state.todolists)
 
 
-    useEffect(() =>{
-        // @ts-ignore
+    useEffect(() => {
         dispatch(fetchTodolistsThunkCreator())
     } ,[])
 

@@ -1,7 +1,9 @@
 import {todolistsApi, TodolistsType} from "../api/todolists-api";
 import {Dispatch} from "redux";
+import {AppRootReducerType, AppThunk, DomainActionsCreatorsType} from "./store";
+import {ThunkAction} from "redux-thunk";
 
-export type ActionsType =
+export type ActionCreatorsTodolistsType =
     ChangeFilterACType
     | DeleteTodolistACType
     | updateTitleTodolistACType
@@ -23,7 +25,8 @@ export type FilterValuesType = 'All' | 'Active' | 'Completed'
 const initialState: Array<TodolistDomainType> = []
 
 
-export const TodolistReducer = (state: Array<TodolistDomainType> = initialState, action: ActionsType): Array<TodolistDomainType> => {
+
+export const TodolistReducer = (state: Array<TodolistDomainType> = initialState, action: ActionCreatorsTodolistsType): Array<TodolistDomainType> => {
     switch (action.type) {
         case 'CHANGE-FILTER': {
             return state.map(tl => tl.id === action.todolistId ? {...tl, filter: action.filterStatus} : tl)
@@ -51,6 +54,8 @@ export const TodolistReducer = (state: Array<TodolistDomainType> = initialState,
 
 };
 
+
+
 export const changeFilterTodolistAC = (filterStatus: FilterValuesType, todolistId: string) => {
     return {type: 'CHANGE-FILTER', filterStatus, todolistId} as const
 }
@@ -68,16 +73,18 @@ export const createTodolistAC = (todolistId: string, todolist: TodolistsType) =>
 }
 
 
-export const fetchTodolistsThunkCreator = () => (dispatch: Dispatch) => {
+
+
+export const fetchTodolistsThunkCreator = ():AppThunk => (dispatch) => {
     todolistsApi.getTodolist()
         .then(response => dispatch(setTodolistsAC(response.data)))
 }
 
-export const createTodolistsThunkCreator = (title: string) => (dispatch: Dispatch) => {
+export const createTodolistsThunkCreator = (title: string):AppThunk => (dispatch) => {
     todolistsApi.createTodolist(title)
         .then(response => dispatch(createTodolistAC(response.item.id, response.item)))
 }
-export const updateTodolistsThunkCreator = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+export const updateTodolistsThunkCreator = (todolistId: string, title: string):AppThunk => (dispatch) => {
     todolistsApi.updateTodolist(todolistId, title)
         .then(response => {
             if (response.data.resultCode === 0) {
@@ -85,7 +92,7 @@ export const updateTodolistsThunkCreator = (todolistId: string, title: string) =
             }
         })
 }
-export const deleteTodolistsThunkCreator = (todolistId: string) => (dispatch: Dispatch) => {
+export const deleteTodolistsThunkCreator = (todolistId: string) => (dispatch: Dispatch<DomainActionsCreatorsType>) => {
     todolistsApi.deleteTodolist(todolistId)
         .then(response => {
             if (response.data.resultCode === 0) {
