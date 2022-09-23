@@ -7,7 +7,7 @@ import {Button, IconButton} from "@material-ui/core";
 import {DeleteForever} from "@material-ui/icons";
 import {createTaskThunkCreator, fetchTasksThunkCreator} from "../state/TasksReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootReducerType} from "../state/store";
+import {AppDispatch, AppRootReducerType} from "../state/store";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../api/tasks-api";
 
@@ -24,10 +24,9 @@ type TodoListPropsType = {
 
 export let Todolist = React.memo((props: TodoListPropsType) => {
     const tasks = useSelector<AppRootReducerType, Array<TaskType>>(state => state.tasks[props.todolistId])
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
 
     useEffect(()=>{
-        // @ts-ignore
         dispatch(fetchTasksThunkCreator(props.todolistId))
     },[])
 
@@ -45,7 +44,6 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
     }, [props.changeTitleTodolist, props.todolistId])
 
     const createTask = useCallback((titleTask: string) => {
-        // @ts-ignore
         dispatch(createTaskThunkCreator(props.todolistId,titleTask))
     }, [dispatch])
 

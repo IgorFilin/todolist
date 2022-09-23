@@ -30,18 +30,15 @@ function AppWithRedux() {
     }, [dispatch])
 
     const deleteTodolist = useCallback((idTodolist: string) => {
-        // @ts-ignore
         dispatch(deleteTodolistsThunkCreator(idTodolist))
     }, [dispatch])
 
     const createTodolist = useCallback((title: string) => {
-        // @ts-ignore
         dispatch(createTodolistsThunkCreator(title))
 
     }, [dispatch])
 
     const changeTitleTodolist = useCallback((title: string, todolistId: string) => {
-        // @ts-ignore
         dispatch(updateTodolistsThunkCreator(todolistId,title))
     }, [dispatch])
 
