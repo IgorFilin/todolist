@@ -3,16 +3,21 @@ import {Delete, Favorite, FavoriteBorder} from "@material-ui/icons";
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import React, {ChangeEvent, useCallback} from "react";
 import {useDispatch} from "react-redux";
-import {deleteTaskThunkCreator, updateTaskAC, updateTaskThunkCreator} from "../../state/TasksReducer";
+import {deleteTaskThunkCreator, updateTaskThunkCreator} from "../../state/TasksReducer";
 import {TaskStatuses} from "../../api/tasks-api";
+import {RequestStatusType} from "../../state/AppReducer";
 
 export type TaskPropsType = {
     todolistId: string
     taskId: string
     title: string
     status: TaskStatuses
+    entityTaskStatus:RequestStatusType
 }
-export const Task = React.memo(({taskId, status, todolistId, title}: TaskPropsType) => {
+export const Task = React.memo(({taskId, status, todolistId, title,entityTaskStatus}: TaskPropsType) => {
+
+    const disabledValue = entityTaskStatus === 'loading'
+
     const dispatch = useDispatch()
 
     const onClickHandlerDeleteTask = useCallback(() => {
@@ -37,11 +42,11 @@ export const Task = React.memo(({taskId, status, todolistId, title}: TaskPropsTy
         opacity: '0.5'
     } : {marginLeft: '10px'}}>
         <FormControlLabel
-            control={<Checkbox checked={status === TaskStatuses.Completed}
+            control={<Checkbox disabled={disabledValue} checked={status === TaskStatuses.Completed}
                                onChange={onChangeCheckHandler}
                                icon={<FavoriteBorder/>} checkedIcon={<Favorite/>} name="checkedH"/>} label=""/>
-        <EditableSpan title={title} changeTitle={(newTitle) => changeTitleTask(newTitle)}/>
-        <IconButton size={"small"}
+        <EditableSpan disable={entityTaskStatus === 'loading'} title={title} changeTitle={(newTitle) => changeTitleTask(newTitle)}/>
+        <IconButton disabled={disabledValue} size={"small"}
                     onClick={onClickHandlerDeleteTask}><Delete/>
         </IconButton>
     </div>

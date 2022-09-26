@@ -10,8 +10,8 @@ const initialState = {
     status:'idle' as const,
     error:null
 }
-
 export const AppReducer = (state:initialStateType = initialState,action:AppReducerActionsType):initialStateType => {
+
     switch (action.type){
         case 'SET-APP-STATUS':{
             return {...state,status: action.status}

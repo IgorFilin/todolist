@@ -22,7 +22,7 @@ export type setTodolistEntityStatusACType = ReturnType<typeof setTodolistEntityS
 
 export type TodolistDomainType = TodolistsType & {
     filter: FilterValuesType
-    entityStatus: RequestStatusType
+    entityTodolistStatus: RequestStatusType
 }
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
 
@@ -40,7 +40,7 @@ export const TodolistReducer = (state: Array<TodolistDomainType> = initialState,
             return state.filter(tl => tl.id !== action.todolistId)
         }
         case "CREATE-TODOLIST": {
-            const newTodolist: TodolistDomainType = {...action.todolist, filter: "All", entityStatus: 'succeeded'}
+            const newTodolist: TodolistDomainType = {...action.todolist, filter: "All", entityTodolistStatus: 'succeeded'}
             return [newTodolist, ...state]
         }
 
@@ -48,10 +48,10 @@ export const TodolistReducer = (state: Array<TodolistDomainType> = initialState,
             return state.map(tl => tl.id === action.todolistId ? {...tl, title: action.title} : tl)
         }
         case "SET-TODOLISTS": {
-            return action.todolists.map(el => ({...el, filter: 'All', entityStatus: 'succeeded'}))
+            return action.todolists.map(el => ({...el, filter: 'All', entityTodolistStatus: 'succeeded'}))
         }
         case "SET-ENTITY-STATUS":{
-            return state.map(tl => tl.id === action.todolistId ? {...tl,entityStatus:action.entityStatus}:tl)
+            return state.map(tl => tl.id === action.todolistId ? {...tl,entityTodolistStatus:action.entityStatus}:tl)
         }
 
         default:
@@ -137,5 +137,6 @@ export const deleteTodolistsThunkCreator = (todolistId: string) => (dispatch: Di
         })
         .catch((error) => {
             handleServerNetworkError(error,dispatch)
+            dispatch(setTodolistEntityStatusAC('failed',todolistId))
         })
 }

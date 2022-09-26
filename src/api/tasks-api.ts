@@ -1,5 +1,6 @@
 import axios from "axios";
 import {ResponseType} from "./todolists-api";
+import {RequestStatusType} from "../state/AppReducer";
 
 const settings = {
     withCredentials: true,

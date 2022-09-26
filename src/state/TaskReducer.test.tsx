@@ -12,14 +12,14 @@ let startState: TasksStateType = {}
 beforeEach(() => {
     startState = {
         "todolistId1": [
-            {id: "1", title: "CSS", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false},
-            {id: "2", title: "JS", status: 2,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false},
-            {id: "3", title: "React", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false}
+            {id: "1", title: "CSS", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false,entityTaskStatus:'idle'},
+            {id: "2", title: "JS", status: 2,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false,entityTaskStatus:'idle'},
+            {id: "3", title: "React", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false,entityTaskStatus:'idle'}
         ],
         "todolistId2": [
-            {id: "1", title: "bread", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId2',completed:false},
-            {id: "2", title: "milk", status: 2,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId2',completed:false},
-            {id: "3", title: "tea", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId2',completed:false}
+            {id: "1", title: "bread", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId2',completed:false,entityTaskStatus:'idle'},
+            {id: "2", title: "milk", status: 2,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId2',completed:false,entityTaskStatus:'idle'},
+            {id: "3", title: "tea", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId2',completed:false,entityTaskStatus:'idle'}
         ]
     };
 })
@@ -97,7 +97,7 @@ test('title of specified task should be changed', () => {
     expect(endState["todolistId2"][2].title).toBe("tea");
 });
 test('new array should be added when new todolist is added', () => {
-    const todolist:TodolistDomainType = {title:'',addedDate:'',order:2,id:'todolistId3',filter:'All',entityStatus:'idle'}
+    const todolist:TodolistDomainType = {title:'',addedDate:'',order:2,id:'todolistId3',filter:'All',entityTodolistStatus:'idle'}
     const action = createTodolistAC('todolistId3', todolist);
 
     const endState = TasksReducer(startState, action)

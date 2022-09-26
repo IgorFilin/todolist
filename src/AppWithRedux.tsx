@@ -55,7 +55,7 @@ function AppWithRedux() {
                           changeFilter={changeFilter}
                           filter={t.filter}
                           changeTitleTodolist={changeTitleTodolist}
-                          entityStatus={t.entityStatus}
+                          entityStatus={t.entityTodolistStatus}
                 />
             </Paper>
         </Grid>)

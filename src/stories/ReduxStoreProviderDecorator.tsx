@@ -15,17 +15,17 @@ const rootReducer = combineReducers({
 
 const initialGlobalState:AppRootReducerType = {
     todolists: [
-        {id:'todolistId1', title:'What to learn', addedDate:'', order:0,filter: "All", entityStatus:'idle'},
-        {id: "todolistId2", title: "What to buy",addedDate:'', order:0, filter: "All",entityStatus:'idle'}
+        {id:'todolistId1', title:'What to learn', addedDate:'', order:0,filter: "All", entityTodolistStatus:'idle'},
+        {id: "todolistId2", title: "What to buy",addedDate:'', order:0, filter: "All",entityTodolistStatus:'idle'}
     ] ,
     tasks: {
         ["todolistId1"]: [
-            {id: v1(), title: "HTML&CSS", description: '', todoListId: '', order: 0, status: TaskStatuses.New, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false},
-            {id: v1(), title: "HTML&CSS", description: '', todoListId: '', order: 0, status: TaskStatuses.Completed, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false}
+            {id: v1(), title: "HTML&CSS", description: '', todoListId: '', order: 0, status: TaskStatuses.New, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false,entityTaskStatus:'idle'},
+            {id: v1(), title: "HTML&CSS", description: '', todoListId: '', order: 0, status: TaskStatuses.Completed, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false,entityTaskStatus:'idle'}
         ],
         ["todolistId2"]: [
-            {id: v1(), title: "Milk", description: '', todoListId: '', order: 0, status: TaskStatuses.Completed, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false},
-            {id: v1(), title: "React Book", description: '', todoListId: '', order: 0, status: TaskStatuses.New, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false}
+            {id: v1(), title: "Milk", description: '', todoListId: '', order: 0, status: TaskStatuses.Completed, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false,entityTaskStatus:'idle'},
+            {id: v1(), title: "React Book", description: '', todoListId: '', order: 0, status: TaskStatuses.New, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false,entityTaskStatus:'idle'}
         ]
     },
     app:{

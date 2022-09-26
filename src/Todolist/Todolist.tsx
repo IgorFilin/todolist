@@ -5,7 +5,7 @@ import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {DeleteForever} from "@material-ui/icons";
-import {createTaskThunkCreator, fetchTasksThunkCreator} from "../state/TasksReducer";
+import {createTaskThunkCreator, fetchTasksThunkCreator, TasksDomainType} from "../state/TasksReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppRootReducerType} from "../state/store";
 import {Task} from "./Task/Task";
@@ -25,7 +25,7 @@ type TodoListPropsType = {
 
 
 export let Todolist = React.memo((props: TodoListPropsType) => {
-    const tasks = useSelector<AppRootReducerType, Array<TaskType>>(state => state.tasks[props.todolistId])
+    const tasks = useSelector<AppRootReducerType, Array<TasksDomainType>>(state => state.tasks[props.todolistId])
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(()=>{
@@ -64,7 +64,7 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
 
     return (<div className={classes.task}>
         <h2 style={{textAlign: 'center'}}>
-            <EditableSpan title={props.title} changeTitle={changeTitleTodolist}/>
+            <EditableSpan disable={props.entityStatus === 'loading'} title={props.title} changeTitle={changeTitleTodolist}/>
             <IconButton disabled={props.entityStatus === 'loading'}  size={"small"} onClick={() => onClickHandlerTodolistDelete(props.todolistId)}
                         className={classes.buttonDelete}><DeleteForever/>
             </IconButton>
@@ -79,6 +79,7 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
                 title={t.title}
                 status={t.status}
                 key={t.id}
+                entityTaskStatus={t.entityTaskStatus}
             />)}
         </div>
         <div style={{textAlign: 'center'}}>
