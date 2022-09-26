@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppRootReducerType} from "../state/store";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../api/tasks-api";
+import {RequestStatusType} from "../state/AppReducer";
 
 
 type TodoListPropsType = {
@@ -19,6 +20,7 @@ type TodoListPropsType = {
     todolistId: string
     deleteTodolist: (todolistId: string) => void
     changeTitleTodolist: (titleTodolist: string, todolistId: string) => void
+    entityStatus:RequestStatusType
 }
 
 
@@ -63,12 +65,12 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
     return (<div className={classes.task}>
         <h2 style={{textAlign: 'center'}}>
             <EditableSpan title={props.title} changeTitle={changeTitleTodolist}/>
-            <IconButton size={"small"} onClick={() => onClickHandlerTodolistDelete(props.todolistId)}
+            <IconButton disabled={props.entityStatus === 'loading'}  size={"small"} onClick={() => onClickHandlerTodolistDelete(props.todolistId)}
                         className={classes.buttonDelete}><DeleteForever/>
             </IconButton>
         </h2>
         <div style={{display: 'flex', justifyContent: 'center'}}>
-            <AddItemForm addItem={createTask}/>
+            <AddItemForm addItem={createTask} disable={props.entityStatus === 'loading'}/>
         </div>
         <div>
             {tasksNotFound ? <h4>Tasks not found</h4> : filteredTasks.map((t) => <Task

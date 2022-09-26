@@ -37,7 +37,6 @@ export type TaskType = {
     addedDate: string
     completed:boolean
 }
-
 type getTaskType = {
     items: Array<TaskType>
     totalCount: number
@@ -57,7 +56,7 @@ export type updateTaskType = {
 export const tasksApi = {
     getTasks(todolistId: string) {
         return instance.get<getTaskType>(`todo-lists/${todolistId}/tasks`)
-            .then(response => response.data.items)
+            .then(response =>response.data.items)
     },
     createTask(todolistId: string, title: string) {
         return instance.post<ResponseType<{item:TaskType}>>(`todo-lists/${todolistId}/tasks`, {title})

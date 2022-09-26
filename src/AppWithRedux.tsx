@@ -7,18 +7,22 @@ import {
     deleteTodolistAC, deleteTodolistsThunkCreator, fetchTodolistsThunkCreator, FilterValuesType,
     TodolistDomainType, updateTodolistsThunkCreator
 } from "./state/TodolistReducer";
-import {Container, Grid, Paper} from "@material-ui/core";
+import {Container, Grid, LinearProgress, Paper, Snackbar} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppRootReducerType} from "./state/store";
 import {AppBarComponent} from "./AppBarComponent";
+import {RequestStatusType} from "./state/AppReducer";
+import CustomizedSnackbars from "./ErrorSnackbar/ErrorSnackbar";
 
 
 
 
 
 function AppWithRedux() {
+
     const dispatch = useDispatch<AppDispatch>()
     const todolists = useSelector<AppRootReducerType, Array<TodolistDomainType>>(state => state.todolists)
+    const status = useSelector<AppRootReducerType, RequestStatusType>(state => state.app.status)
 
 
     useEffect(() => {
@@ -51,6 +55,7 @@ function AppWithRedux() {
                           changeFilter={changeFilter}
                           filter={t.filter}
                           changeTitleTodolist={changeTitleTodolist}
+                          entityStatus={t.entityStatus}
                 />
             </Paper>
         </Grid>)
@@ -58,15 +63,16 @@ function AppWithRedux() {
 
     return (<div className="App">
         <AppBarComponent/>
+        {status === 'loading' && <LinearProgress style={{position:'absolute',width:'100%',height:'5px'}} color={"secondary"}/>}
         <Container fixed>
             <Grid container style={{paddingTop: '20px', paddingBottom: '20px'}}>
-                <AddItemForm addItem={createTodolist}/>
+                <AddItemForm disable={false} addItem={createTodolist}/>
             </Grid>
             <Grid container spacing={5}>
                 {mappingTodolists}
             </Grid>
         </Container>
-
+        <CustomizedSnackbars/>
     </div>)
 
 

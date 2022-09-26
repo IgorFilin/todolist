@@ -97,7 +97,7 @@ test('title of specified task should be changed', () => {
     expect(endState["todolistId2"][2].title).toBe("tea");
 });
 test('new array should be added when new todolist is added', () => {
-    const todolist:TodolistDomainType = {title:'',addedDate:'',order:2,id:'todolistId3',filter:'All'}
+    const todolist:TodolistDomainType = {title:'',addedDate:'',order:2,id:'todolistId3',filter:'All',entityStatus:'idle'}
     const action = createTodolistAC('todolistId3', todolist);
 
     const endState = TasksReducer(startState, action)

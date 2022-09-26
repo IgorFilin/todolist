@@ -5,10 +5,11 @@ import {AddCircleTwoTone} from "@material-ui/icons";
 
 
 type AddItemFormType = {
-    addItem: (t: string) => void
+    addItem: (title: string) => void
+    disable: boolean
 }
 
-export const AddItemForm: React.FC<AddItemFormType> = React.memo(({addItem}) => {
+export const AddItemForm: React.FC<AddItemFormType> = React.memo(({addItem,disable}) => {
     let [filterInput, setFilterInput] = useState("")
     let [error, setError] = useState<string | null>(null)
     let filterInputTrim = filterInput.trim()
@@ -34,7 +35,8 @@ export const AddItemForm: React.FC<AddItemFormType> = React.memo(({addItem}) => 
 
     return (
         <div>
-            <TextField label='Title'
+            <TextField disabled={disable}
+                       label='Title'
                        size={"medium"}
                        variant={"outlined"}
                        error={!!error}
@@ -43,8 +45,10 @@ export const AddItemForm: React.FC<AddItemFormType> = React.memo(({addItem}) => 
                        onChange={onChangeHandler} onKeyDown={keyPressAddItem}
             />
             <IconButton size={"medium"}
+                        disabled={disable}
                         className={classes.buttonAdd}
-                        onClick={onClickAddItem}><AddCircleTwoTone/>
+                        onClick={onClickAddItem}>
+                <AddCircleTwoTone/>
             </IconButton>
 
         </div>
