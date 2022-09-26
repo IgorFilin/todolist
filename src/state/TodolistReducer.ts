@@ -113,15 +113,18 @@ export const createTodolistsThunkCreator = (title: string): AppThunk => (dispatc
 }
 export const updateTodolistsThunkCreator = (todolistId: string, title: string): AppThunk => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
+    dispatch(setTodolistEntityStatusAC('loading',todolistId))
     todolistsApi.updateTodolist(todolistId, title)
         .then(response => {
             if (response.data.resultCode === 0) {
                 dispatch(updateTitleTodolistAC(title, todolistId))
                 dispatch(setAppStatusAC('succeeded'))
+                dispatch(setTodolistEntityStatusAC('succeeded',todolistId))
             }
         })
         .catch((error) => {
             handleServerNetworkError(error,dispatch)
+            dispatch(setTodolistEntityStatusAC('failed',todolistId))
         })
 }
 export const deleteTodolistsThunkCreator = (todolistId: string) => (dispatch: Dispatch<DomainActionsCreatorsType>) => {
