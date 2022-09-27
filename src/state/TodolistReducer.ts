@@ -2,7 +2,7 @@ import {todolistsApi, TodolistsType} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {AppThunk, DomainActionsCreatorsType} from "./store";
 import {AppReducerActionsType, RequestStatusType, setAppErrorAC, setAppStatusAC} from "./AppReducer";
-import {handleServerNetworkError} from "../utils/error-utils";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 export type ActionCreatorsTodolistsType =
     ChangeFilterACType
@@ -120,6 +120,9 @@ export const updateTodolistsThunkCreator = (todolistId: string, title: string): 
                 dispatch(updateTitleTodolistAC(title, todolistId))
                 dispatch(setAppStatusAC('succeeded'))
                 dispatch(setTodolistEntityStatusAC('succeeded',todolistId))
+            }else if (response.data.resultCode === 1){
+                handleServerAppError(response.data,dispatch)
+                dispatch(setTodolistEntityStatusAC('failed',todolistId))
             }
         })
         .catch((error) => {

@@ -12,9 +12,9 @@ export type TaskPropsType = {
     taskId: string
     title: string
     status: TaskStatuses
-    entityTaskStatus:RequestStatusType
+    entityTaskStatus: RequestStatusType
 }
-export const Task = React.memo(({taskId, status, todolistId, title,entityTaskStatus}: TaskPropsType) => {
+export const Task = React.memo(({taskId, status, todolistId, title, entityTaskStatus}: TaskPropsType) => {
 
     const disabledValue = entityTaskStatus === 'loading'
 
@@ -28,25 +28,28 @@ export const Task = React.memo(({taskId, status, todolistId, title,entityTaskSta
     const onChangeCheckHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const statusTask = e.currentTarget.checked
         // @ts-ignore
-        dispatch(updateTaskThunkCreator(todolistId,taskId, {status:statusTask ? TaskStatuses.Completed : TaskStatuses.New}))
+        dispatch(updateTaskThunkCreator(todolistId, taskId, {status: statusTask ? TaskStatuses.Completed : TaskStatuses.New}))
     }, [dispatch])
 
     const changeTitleTask = useCallback((newTitle: string) => {
         // @ts-ignore
-        dispatch(updateTaskThunkCreator(todolistId,taskId, {title:newTitle}))
+        dispatch(updateTaskThunkCreator(todolistId, taskId, {title: newTitle}))
     }, [dispatch])
 
-    return <div style={status === TaskStatuses.Completed? {
+    return <div style={status === TaskStatuses.Completed ? {
         textDecoration: 'line-through',
         marginLeft: '10px',
         opacity: '0.5'
     } : {marginLeft: '10px'}}>
         <FormControlLabel
-            control={<Checkbox disabled={disabledValue} checked={status === TaskStatuses.Completed}
-                               onChange={onChangeCheckHandler}
-                               icon={<FavoriteBorder/>} checkedIcon={<Favorite/>} name="checkedH"/>} label=""/>
-        <EditableSpan disable={entityTaskStatus === 'loading'} title={title} changeTitle={(newTitle) => changeTitleTask(newTitle)}/>
-        <IconButton disabled={disabledValue} size={"small"}
+            control={
+                <Checkbox disabled={disabledValue} checked={status === TaskStatuses.Completed}
+                          onChange={onChangeCheckHandler}
+                          icon={<FavoriteBorder/>} checkedIcon={<Favorite/>} name="checkedH"/>
+            } label=""/>
+        <EditableSpan disable={entityTaskStatus === 'loading'} title={title}
+                      changeTitle={(newTitle) => changeTitleTask(newTitle)}/>
+        <IconButton style={{float:'right'}} disabled={disabledValue} size={"small"}
                     onClick={onClickHandlerDeleteTask}><Delete/>
         </IconButton>
     </div>

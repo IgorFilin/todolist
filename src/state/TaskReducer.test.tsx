@@ -1,7 +1,7 @@
 import {
     createTaskAC,
     deleteTaskAC,
-    setTaskAC,
+    setTaskAC, TasksDomainType,
     TasksReducer, updateTaskAC
 } from "./TasksReducer";
 import {createTodolistAC, deleteTodolistAC, setTodolistsAC, TodolistDomainType} from "./TodolistReducer";
@@ -32,13 +32,13 @@ test('correct task should be deleted from correct array', () => {
 
     expect(endState).toEqual({
         "todolistId1": [
-            {id: "1", title: "CSS", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false},
-            {id: "2", title: "JS", status: 2,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false},
-            {id: "3", title: "React", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false}
+            {id: "1", title: "CSS", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false,entityTaskStatus:'idle'},
+            {id: "2", title: "JS", status: 2,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false,entityTaskStatus:'idle'},
+            {id: "3", title: "React", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false,entityTaskStatus:'idle'}
         ],
         "todolistId2": [
-            {id: "1", title: "bread", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId2',completed:false},
-            {id: "3", title: "tea", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId2',completed:false}
+            {id: "1", title: "bread", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId2',completed:false,entityTaskStatus:'idle'},
+            {id: "3", title: "tea", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId2',completed:false,entityTaskStatus:'idle'}
         ]
     });
 
@@ -137,10 +137,10 @@ test('new array should be added when set todolists', () => {
 test('new array with tasks should be set todolist', () => {
 
 
-    const arrayTasks:Array<TaskType> = [
-        {id: "1", title: "CSS", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false},
-        {id: "2", title: "JS", status: 2,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false},
-        {id: "3", title: "React", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false}
+    const arrayTasks:Array<TasksDomainType> = [
+        {id: "1", title: "CSS", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false,entityTaskStatus:'idle'},
+        {id: "2", title: "JS", status: 2,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false,entityTaskStatus:'idle'},
+        {id: "3", title: "React", status: 0,addedDate:'',deadline:'',description:'',order:0,startDate:'',priority:0,todoListId:'todolistId1',completed:false,entityTaskStatus:'idle'}
     ]
     const action = setTaskAC(arrayTasks,'todolistId1');
 

@@ -140,7 +140,7 @@ export const createTaskThunkCreator = (todolistId: string, title: string): AppTh
                 dispatch(createTaskAC(todolistId, response.data.data.item))
                 dispatch(setAppStatusAC('succeeded'))
             } else if (response.data.resultCode === 1) {
-                handleServerAppError<{ item: TaskType }>(response.data, dispatch)
+                handleServerAppError(response.data, dispatch)
             }
         })
         .catch(error => {
@@ -169,7 +169,7 @@ export const updateTaskThunkCreator = (todolistId: string, taskId: string, updat
                 dispatch(setAppStatusAC('succeeded'))
                 dispatch(setEntityTaskStatusAC('succeeded',taskId,todolistId))
             } else if (response.data.resultCode === 1) {
-                handleServerAppError<{ item: TaskType }>(response.data, dispatch)
+                handleServerAppError(response.data, dispatch)
                 dispatch(setEntityTaskStatusAC('failed',taskId,todolistId))
             }
 
