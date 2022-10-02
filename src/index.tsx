@@ -6,6 +6,7 @@ import {createTheme, CssBaseline, ThemeProvider} from "@material-ui/core";
 import AppWithRedux from "./AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./state/store";
+import {BrowserRouter} from "react-router-dom";
 
 
 const theme = createTheme({
@@ -27,7 +28,9 @@ ReactDOM.render(
         theme={theme}>
         <CssBaseline/>
         <Provider store={store}>
-            <AppWithRedux/>
+            <BrowserRouter>
+                <AppWithRedux/>
+            </BrowserRouter>
         </Provider>
     </ThemeProvider>
     , document.getElementById('root'));

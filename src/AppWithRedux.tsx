@@ -13,13 +13,12 @@ import {AppDispatch, AppRootReducerType} from "./state/store";
 import {AppBarComponent} from "./AppBarComponent";
 import {RequestStatusType} from "./state/AppReducer";
 import CustomizedSnackbars from "./ErrorSnackbar/ErrorSnackbar";
-
-
-
+import {Navigate, redirect, Route, Routes} from "react-router-dom";
+import Login from "./Login/Login";
+import {isAuthTC, setAuthMeAC} from "./state/AuthReducer";
 
 
 function AppWithRedux() {
-
     const dispatch = useDispatch<AppDispatch>()
     const todolists = useSelector<AppRootReducerType, Array<TodolistDomainType>>(state => state.todolists)
     const status = useSelector<AppRootReducerType, RequestStatusType>(state => state.app.status)
@@ -27,7 +26,8 @@ function AppWithRedux() {
 
     useEffect(() => {
         dispatch(fetchTodolistsThunkCreator())
-    } ,[])
+        dispatch(isAuthTC())
+    }, [])
 
     const changeFilter = useCallback((status: FilterValuesType, todolistId: string) => {
         dispatch(changeFilterTodolistAC(status, todolistId))
@@ -43,9 +43,8 @@ function AppWithRedux() {
     }, [dispatch])
 
     const changeTitleTodolist = useCallback((title: string, todolistId: string) => {
-        dispatch(updateTodolistsThunkCreator(todolistId,title))
+        dispatch(updateTodolistsThunkCreator(todolistId, title))
     }, [dispatch])
-
     const mappingTodolists = todolists.map(t => {
         return (<Grid key={t.id} item>
             <Paper style={{padding: '5px 10px 10px 10px'}}>
@@ -60,16 +59,21 @@ function AppWithRedux() {
             </Paper>
         </Grid>)
     })
-
     return (<div className="App">
         <AppBarComponent/>
-        {status === 'loading' && <LinearProgress style={{position:'absolute',width:'100%',height:'5px'}} color={"secondary"}/>}
+        {status === 'loading' &&
+            <LinearProgress style={{position: 'absolute', width: '100%', height: '5px'}} color={"secondary"}/>}
         <Container fixed>
             <Grid container style={{paddingTop: '20px', paddingBottom: '20px'}}>
                 <AddItemForm disable={false} addItem={createTodolist}/>
             </Grid>
             <Grid container spacing={5}>
-                {mappingTodolists}
+                <Routes>
+                    <Route path={'/'} element={mappingTodolists}/>
+                    <Route path={'/login'} element={<Login/>}/>
+                    <Route path='/404' element={<h1>404: PAGE NOT FOUND</h1>} />
+                    <Route path='*' element={<Navigate to={'/404'}/>} />
+                </Routes>
             </Grid>
         </Container>
         <CustomizedSnackbars/>

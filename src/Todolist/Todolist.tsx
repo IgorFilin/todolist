@@ -11,6 +11,7 @@ import {AppDispatch, AppRootReducerType} from "../state/store";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../api/tasks-api";
 import {RequestStatusType} from "../state/AppReducer";
+import {Navigate} from "react-router-dom";
 
 
 type TodoListPropsType = {
@@ -84,16 +85,16 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
         </div>
         <div style={{textAlign: 'center'}}>
             <Button color={props.filter === 'All' ? "secondary" : "default"} size={"small"} variant={"contained"}
-                    onClick={useCallback(() => onClickChangeHandler('All', props.todolistId), [props.todolistId])}>All
+                    onClick={() => onClickChangeHandler('All', props.todolistId)}>All
             </Button>
             <Button color={props.filter === 'Active' ? "secondary" : "default"} style={{marginLeft: '3px'}}
                     size={"small"} variant={"contained"}
-                    onClick={useCallback(() => onClickChangeHandler('Active', props.todolistId), [props.todolistId])}
+                    onClick={() => onClickChangeHandler('Active', props.todolistId)}
             >Active
             </Button>
             <Button color={props.filter === 'Completed' ? "secondary" : "default"} style={{marginLeft: '3px'}}
                     size={"small"} variant={"contained"}
-                    onClick={useCallback(() => onClickChangeHandler('Completed', props.todolistId), [props.todolistId])}>Completed
+                    onClick={() => onClickChangeHandler('Completed', props.todolistId)}>Completed
             </Button>
         </div>
     </div>)

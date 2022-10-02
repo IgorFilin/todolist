@@ -2,7 +2,7 @@ import axios from "axios";
 import {ResponseType} from "./todolists-api";
 import {RequestStatusType} from "../state/AppReducer";
 
-const settings = {
+export const settings = {
     withCredentials: true,
     headers: {
         'API-KEY': '523f3afc-9394-4d5e-8a49-5b44c559d911'
