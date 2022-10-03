@@ -1,11 +1,11 @@
 import {Checkbox, FormControlLabel, IconButton} from "@material-ui/core";
 import {Delete, Favorite, FavoriteBorder} from "@material-ui/icons";
-import {EditableSpan} from "../../EditableSpan/EditableSpan";
+import {EditableSpan} from "../../../EditableSpan/EditableSpan";
 import React, {ChangeEvent, useCallback} from "react";
 import {useDispatch} from "react-redux";
-import {deleteTaskThunkCreator, updateTaskThunkCreator} from "../../state/TasksReducer";
-import {TaskStatuses} from "../../api/tasks-api";
-import {RequestStatusType} from "../../state/AppReducer";
+import {deleteTaskThunkCreator, updateTaskThunkCreator} from "../../../../state/TasksReducer";
+import {TaskStatuses} from "../../../../api/tasks-api";
+import {RequestStatusType} from "../../../../state/AppReducer";
 
 export type TaskPropsType = {
     todolistId: string

@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import classes from "../Todolist/Todolist.module.css";
+
 import {IconButton, TextField} from "@material-ui/core";
 import {AddCircleTwoTone} from "@material-ui/icons";
 
@@ -46,7 +46,6 @@ export const AddItemForm: React.FC<AddItemFormType> = React.memo(({addItem,disab
             />
             <IconButton size={"medium"}
                         disabled={disable}
-                        className={classes.buttonAdd}
                         onClick={onClickAddItem}>
                 <AddCircleTwoTone/>
             </IconButton>

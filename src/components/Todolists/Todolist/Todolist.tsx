@@ -1,17 +1,15 @@
 import React, {useCallback, useEffect} from "react";
-import classes from './Todolist.module.css'
-import {FilterValuesType} from "../state/TodolistReducer";
-import {AddItemForm} from "../AddItemForm/AddItemForm";
-import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {FilterValuesType} from "../../../state/TodolistReducer";
+import {AddItemForm} from "../../AddItemForm/AddItemForm";
+import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {DeleteForever} from "@material-ui/icons";
-import {createTaskThunkCreator, fetchTasksThunkCreator, TasksDomainType} from "../state/TasksReducer";
+import {createTaskThunkCreator, fetchTasksThunkCreator, TasksDomainType} from "../../../state/TasksReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppRootReducerType} from "../state/store";
+import {AppDispatch, AppRootReducerType} from "../../../state/store";
 import {Task} from "./Task/Task";
-import {TaskStatuses, TaskType} from "../api/tasks-api";
-import {RequestStatusType} from "../state/AppReducer";
-import {Navigate} from "react-router-dom";
+import {TaskStatuses} from "../../../api/tasks-api";
+import {RequestStatusType} from "../../../state/AppReducer";
 
 
 type TodoListPropsType = {
@@ -34,7 +32,7 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
     },[])
 
     const onClickChangeHandler = useCallback((name: FilterValuesType, todolistId: string) => {
-        props.changeFilter(name, props.todolistId)
+        props.changeFilter(name, todolistId)
     }, [props.todolistId, props.changeFilter])
 
 
@@ -63,11 +61,10 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
 
     const tasksNotFound = filteredTasks.length === 0
 
-    return (<div className={classes.task}>
+    return (<div>
         <h2 style={{textAlign: 'center'}}>
             <EditableSpan disable={props.entityStatus === 'loading'} title={props.title} changeTitle={changeTitleTodolist}/>
-            <IconButton disabled={props.entityStatus === 'loading'}  size={"small"} onClick={() => onClickHandlerTodolistDelete(props.todolistId)}
-                        className={classes.buttonDelete}><DeleteForever/>
+            <IconButton disabled={props.entityStatus === 'loading'}  size={"small"} onClick={() => onClickHandlerTodolistDelete(props.todolistId)}><DeleteForever/>
             </IconButton>
         </h2>
         <div style={{display: 'flex', justifyContent: 'center'}}>

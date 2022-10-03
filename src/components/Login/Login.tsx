@@ -32,7 +32,7 @@ const Login = () => {
             }else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                 errors.email = 'Invalid email address'
             }else if(values.password.length < 3){
-                errors.password = 'password under 3 symbols'
+                errors.password = 'password under minimum 3 symbols'
             }
             return errors
         },
