@@ -1,6 +1,7 @@
 import axios from "axios";
 import {settings} from "./tasks-api";
 import {ResponseType} from "./todolists-api";
+import {FormDataType} from "../components/Login/Login";
 
 
 const instance = axios.create({
@@ -9,7 +10,7 @@ const instance = axios.create({
 })
 
 export type authMeDataType = {
-    d: number
+    id: number
     email: string
     login: string
 }
@@ -18,7 +19,10 @@ export const authApi = {
     authMe(){
         return instance.get<ResponseType<authMeDataType>>('/auth/me')
     },
-    login(){
-        return instance.post<ResponseType<{userId:number}>>('/auth/login')
+    logIn(formData:FormDataType){
+        return instance.post<ResponseType<{userId:number}>>('/auth/login',formData)
+    },
+    logOut(){
+        return instance.delete<ResponseType<{}>>('/auth/login')
     }
 }

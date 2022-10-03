@@ -32,10 +32,11 @@ const initialGlobalState:AppRootReducerType = {
     },
     app:{
         status:'idle',
-        error:null
+        error:null,
+        isInitialized: true
     },
     auth:{
-        isAuth:true
+        isLoggedIn:true
     }
 };
 

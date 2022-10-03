@@ -11,7 +11,7 @@ import {
     TodolistDomainType,
     updateTodolistsThunkCreator
 } from "./state/TodolistReducer";
-import {Container, Grid, LinearProgress, Paper} from "@material-ui/core";
+import {CircularProgress, Container, Grid, LinearProgress, Paper} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppRootReducerType} from "./state/store";
 import {AppBarComponent} from "./AppBarComponent";
@@ -24,31 +24,32 @@ import {isAuthTC} from "./state/AuthReducer";
 
 function AppWithRedux() {
     const status = useSelector<AppRootReducerType, RequestStatusType>(state => state.app.status)
-
     const dispatch = useDispatch<AppDispatch>()
+    const isInitialized = useSelector<AppRootReducerType, boolean>(state => state.app.isInitialized)
 
     useEffect(() => {
-        dispatch(fetchTodolistsThunkCreator())
         dispatch(isAuthTC())
     }, [])
 
-    return (<div className="App">
-        <AppBarComponent/>
-        {status === 'loading' &&
-            <LinearProgress style={{position: 'absolute', width: '100%', height: '5px'}} color={"secondary"}/>
-        }
-        <Container fixed>
+    if(!isInitialized){
+        return <div style={{display:'flex',justifyContent:'center',paddingTop:'200px'}}><CircularProgress color="secondary" /></div>
+    }
 
-            <Routes>
-                <Route path={'/'} element={<Todolists/>}/>
-                <Route path={'/login'} element={<Login/>}/>
-                <Route path='/404' element={<h1>404: PAGE NOT FOUND</h1>}/>
-                <Route path='*' element={<Navigate to={'/404'}/>}/>
-            </Routes>
-
-        </Container>
-        <CustomizedSnackbars/>
-    </div>)
+        return (<div className="App">
+            <AppBarComponent/>
+            {status === 'loading' &&
+                <LinearProgress style={{position: 'absolute', width: '100%', height: '5px'}} color={"secondary"}/>
+            }
+            <Container fixed>
+                <Routes>
+                    <Route path={'/'} element={<Todolists/>}/>
+                    <Route path={'/login'} element={<Login/>}/>
+                    <Route path='/404' element={<h1>404: PAGE NOT FOUND</h1>}/>
+                    <Route path='*' element={<Navigate to={'/404'}/>}/>
+                </Routes>
+            </Container>
+            <CustomizedSnackbars/>
+        </div>)
 
 
 }

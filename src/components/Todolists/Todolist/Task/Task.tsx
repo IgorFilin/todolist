@@ -1,11 +1,12 @@
 import {Checkbox, FormControlLabel, IconButton} from "@material-ui/core";
 import {Delete, Favorite, FavoriteBorder} from "@material-ui/icons";
 import {EditableSpan} from "../../../EditableSpan/EditableSpan";
-import React, {ChangeEvent, useCallback} from "react";
+import React, {ChangeEvent, useCallback, useEffect} from "react";
 import {useDispatch} from "react-redux";
-import {deleteTaskThunkCreator, updateTaskThunkCreator} from "../../../../state/TasksReducer";
+import {deleteTaskThunkCreator, fetchTasksThunkCreator, updateTaskThunkCreator} from "../../../../state/TasksReducer";
 import {TaskStatuses} from "../../../../api/tasks-api";
 import {RequestStatusType} from "../../../../state/AppReducer";
+import {AppDispatch} from "../../../../state/store";
 
 export type TaskPropsType = {
     todolistId: string
@@ -15,10 +16,9 @@ export type TaskPropsType = {
     entityTaskStatus: RequestStatusType
 }
 export const Task = React.memo(({taskId, status, todolistId, title, entityTaskStatus}: TaskPropsType) => {
+    const dispatch = useDispatch<AppDispatch>()
 
     const disabledValue = entityTaskStatus === 'loading'
-
-    const dispatch = useDispatch()
 
     const onClickHandlerDeleteTask = useCallback(() => {
         // @ts-ignore

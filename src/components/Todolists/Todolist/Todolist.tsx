@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from "react";
-import {FilterValuesType} from "../../../state/TodolistReducer";
+import {fetchTodolistsThunkCreator, FilterValuesType} from "../../../state/TodolistReducer";
 import {AddItemForm} from "../../AddItemForm/AddItemForm";
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
@@ -10,6 +10,8 @@ import {AppDispatch, AppRootReducerType} from "../../../state/store";
 import {Task} from "./Task/Task";
 import {TaskStatuses} from "../../../api/tasks-api";
 import {RequestStatusType} from "../../../state/AppReducer";
+import {Navigate} from "react-router-dom";
+import {isAuthTC} from "../../../state/AuthReducer";
 
 
 type TodoListPropsType = {
@@ -19,17 +21,19 @@ type TodoListPropsType = {
     todolistId: string
     deleteTodolist: (todolistId: string) => void
     changeTitleTodolist: (titleTodolist: string, todolistId: string) => void
-    entityStatus:RequestStatusType
+    entityStatus: RequestStatusType
 }
 
 
 export let Todolist = React.memo((props: TodoListPropsType) => {
     const tasks = useSelector<AppRootReducerType, Array<TasksDomainType>>(state => state.tasks[props.todolistId])
     const dispatch = useDispatch<AppDispatch>()
+    const isLoggedIn = useSelector<AppRootReducerType, boolean>(state => state.auth.isLoggedIn)
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(fetchTasksThunkCreator(props.todolistId))
-    },[])
+    }, [])
+
 
     const onClickChangeHandler = useCallback((name: FilterValuesType, todolistId: string) => {
         props.changeFilter(name, todolistId)
@@ -45,7 +49,7 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
     }, [props.changeTitleTodolist, props.todolistId])
 
     const createTask = useCallback((titleTask: string) => {
-        dispatch(createTaskThunkCreator(props.todolistId,titleTask))
+        dispatch(createTaskThunkCreator(props.todolistId, titleTask))
     }, [dispatch])
 
     let filteredTasks = tasks
@@ -61,10 +65,15 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
 
     const tasksNotFound = filteredTasks.length === 0
 
+    if (!isLoggedIn) {
+        return <Navigate to={'login/'}/>
+    }
     return (<div>
         <h2 style={{textAlign: 'center'}}>
-            <EditableSpan disable={props.entityStatus === 'loading'} title={props.title} changeTitle={changeTitleTodolist}/>
-            <IconButton disabled={props.entityStatus === 'loading'}  size={"small"} onClick={() => onClickHandlerTodolistDelete(props.todolistId)}><DeleteForever/>
+            <EditableSpan disable={props.entityStatus === 'loading'} title={props.title}
+                          changeTitle={changeTitleTodolist}/>
+            <IconButton disabled={props.entityStatus === 'loading'} size={"small"}
+                        onClick={() => onClickHandlerTodolistDelete(props.todolistId)}><DeleteForever/>
             </IconButton>
         </h2>
         <div style={{display: 'flex', justifyContent: 'center'}}>
