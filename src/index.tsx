@@ -28,7 +28,7 @@ ReactDOM.render(
         theme={theme}>
         <CssBaseline/>
         <Provider store={store}>
-            <BrowserRouter>
+            <BrowserRouter basename={'/todolist'}>
                 <AppWithRedux/>
             </BrowserRouter>
         </Provider>

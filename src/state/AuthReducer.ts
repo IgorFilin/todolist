@@ -1,7 +1,7 @@
 import {Dispatch} from "redux";
 import {authApi} from "../api/auth-api";
 import {FormDataType} from "../components/Login/Login";
-import {setAppStatusAC, setInitializedAppErrorAC} from "./AppReducer";
+import {clearAppStateAC, setAppStatusAC, setInitializedAppErrorAC} from "./AppReducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 export type AppReducerActionsType =  setLoginACType
@@ -73,6 +73,7 @@ export const logOutTC = () => (dispatch: Dispatch) => {
         .then((res) => {
             if (res.data.resultCode === 0) {
                 dispatch(setLoginAC(false))
+                dispatch(clearAppStateAC())
                 dispatch(setAppStatusAC('succeeded'))
             } else {
                 handleServerAppError(res.data, dispatch)

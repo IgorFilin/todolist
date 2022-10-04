@@ -2,10 +2,11 @@
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type errorValueType = string | null
 type initialStateType = { status:RequestStatusType ,error:errorValueType,isInitialized:boolean}
-export type AppReducerActionsType = setAppStatusACType | setAppErrorACType | setInitializedAppErrorACACType
+export type AppReducerActionsType = setAppStatusACType | setAppErrorACType | setInitializedAppErrorACType
 export type setAppStatusACType = ReturnType<typeof setAppStatusAC>
 export type setAppErrorACType = ReturnType<typeof setAppErrorAC>
-export type setInitializedAppErrorACACType = ReturnType<typeof setInitializedAppErrorAC>
+export type setInitializedAppErrorACType = ReturnType<typeof setInitializedAppErrorAC>
+export type clearAppStateACType = ReturnType<typeof clearAppStateAC>
 
 const initialState = {
     status:'idle' as const, // отображаем полоску загрузка если loading
@@ -39,4 +40,7 @@ export const setInitializedAppErrorAC = (initializeValue:boolean) => {
 }
 export const setAppErrorAC = (errorValue:errorValueType) => {
     return {type:'APP/SET-APP-ERROR',errorValue} as const
+}
+export const clearAppStateAC = () => {
+    return {type:'APP/CLEAR-APP-STATE'} as const
 }

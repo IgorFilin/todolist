@@ -2,7 +2,7 @@ import {CreateTodolistACType, DeleteTodolistACType, SetTodolistACType} from "./T
 
 import {tasksApi, TaskType, updateTaskType} from "../api/tasks-api";
 import {AppThunk} from "./store";
-import {RequestStatusType, setAppStatusAC} from "./AppReducer";
+import {clearAppStateACType, RequestStatusType, setAppStatusAC} from "./AppReducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 
@@ -15,6 +15,7 @@ export type ActionCreatorsTasksType =
     | setTaskAC
     | CreateTodolistACType
     | setEntityTaskStatusACType
+    | clearAppStateACType
 
 type DeleteTaskACType = ReturnType<typeof deleteTaskAC>
 type createTaskACType = ReturnType<typeof createTaskAC>
@@ -80,8 +81,17 @@ export const TasksReducer = (state: TasksStateType = initialState, action: Actio
         case "SET-TASKS": {
             return {...state, [action.todolistId]: action.tasks.map(t => ({...t, entityTaskStatus: 'idle'}))}
         }
-        case "SET-ENTITY-TASK-STATUS":{
-            return {...state,[action.todolistId]:state[action.todolistId].map(t => t.id === action.taskId?{...t,entityTaskStatus:action.entityStatus}:t)}
+        case "SET-ENTITY-TASK-STATUS": {
+            return {
+                ...state,
+                [action.todolistId]: state[action.todolistId].map(t => t.id === action.taskId ? {
+                    ...t,
+                    entityTaskStatus: action.entityStatus
+                } : t)
+            }
+        }
+        case "APP/CLEAR-APP-STATE":{
+            return {}
         }
         default:
             return state
@@ -102,13 +112,12 @@ export const updateTaskAC = (todolistId: string, taskId: string, task: TaskType)
 export const setTaskAC = (tasks: Array<TaskType>, todolistId: string) => {
     return {type: 'SET-TASKS', tasks, todolistId} as const
 }
-export const setEntityTaskStatusAC = (entityStatus: RequestStatusType,taskId:string,todolistId:string) => {
-    return {type: 'SET-ENTITY-TASK-STATUS', entityStatus,taskId,todolistId} as const
+export const setEntityTaskStatusAC = (entityStatus: RequestStatusType, taskId: string, todolistId: string) => {
+    return {type: 'SET-ENTITY-TASK-STATUS', entityStatus, taskId, todolistId} as const
 }
 
 
 export const fetchTasksThunkCreator = (todolistId: string): AppThunk => (dispatch) => {
-    debugger
     dispatch(setAppStatusAC('loading'))
     tasksApi.getTasks(todolistId)
         .then(items => {
@@ -121,15 +130,15 @@ export const fetchTasksThunkCreator = (todolistId: string): AppThunk => (dispatc
 }
 export const deleteTaskThunkCreator = (todolistId: string, taskId: string): AppThunk => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    dispatch(setEntityTaskStatusAC('loading',taskId,todolistId))
+    dispatch(setEntityTaskStatusAC('loading', taskId, todolistId))
     tasksApi.deleteTask(todolistId, taskId)
         .then(items => {
             dispatch(deleteTaskAC(todolistId, taskId))
             dispatch(setAppStatusAC('succeeded'))
-            dispatch(setEntityTaskStatusAC('succeeded',taskId,todolistId))
+            dispatch(setEntityTaskStatusAC('succeeded', taskId, todolistId))
         })
         .catch(error => {
-            dispatch(setEntityTaskStatusAC('failed',taskId,todolistId))
+            dispatch(setEntityTaskStatusAC('failed', taskId, todolistId))
             handleServerNetworkError(error, dispatch)
         })
 }
@@ -149,7 +158,7 @@ export const createTaskThunkCreator = (todolistId: string, title: string): AppTh
         })
 }
 export const updateTaskThunkCreator = (todolistId: string, taskId: string, updatePayload: updateTaskDomainType): AppThunk => (dispatch, getState) => {
-    dispatch(setEntityTaskStatusAC('loading',taskId,todolistId))
+    dispatch(setEntityTaskStatusAC('loading', taskId, todolistId))
     dispatch(setAppStatusAC('loading'))
     const task = getState().tasks[todolistId].find(task => task.id === taskId)
     if (!task) return console.warn('Task not found')
@@ -168,15 +177,15 @@ export const updateTaskThunkCreator = (todolistId: string, taskId: string, updat
             if (response.data.resultCode === 0) {
                 dispatch(updateTaskAC(todolistId, taskId, response.data.data.item))
                 dispatch(setAppStatusAC('succeeded'))
-                dispatch(setEntityTaskStatusAC('succeeded',taskId,todolistId))
+                dispatch(setEntityTaskStatusAC('succeeded', taskId, todolistId))
             } else if (response.data.resultCode === 1) {
                 handleServerAppError(response.data, dispatch)
-                dispatch(setEntityTaskStatusAC('failed',taskId,todolistId))
+                dispatch(setEntityTaskStatusAC('failed', taskId, todolistId))
             }
 
         })
         .catch((error) => {
             handleServerNetworkError(error, dispatch)
-            dispatch(setEntityTaskStatusAC('failed',taskId,todolistId))
+            dispatch(setEntityTaskStatusAC('failed', taskId, todolistId))
         })
 }

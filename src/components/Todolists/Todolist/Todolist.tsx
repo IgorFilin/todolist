@@ -30,11 +30,6 @@ export let Todolist = React.memo((props: TodoListPropsType) => {
     const dispatch = useDispatch<AppDispatch>()
     const isLoggedIn = useSelector<AppRootReducerType, boolean>(state => state.auth.isLoggedIn)
 
-    useEffect(() => {
-        dispatch(fetchTasksThunkCreator(props.todolistId))
-    }, [])
-
-
     const onClickChangeHandler = useCallback((name: FilterValuesType, todolistId: string) => {
         props.changeFilter(name, todolistId)
     }, [props.todolistId, props.changeFilter])

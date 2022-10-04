@@ -21,18 +21,15 @@ export const Task = React.memo(({taskId, status, todolistId, title, entityTaskSt
     const disabledValue = entityTaskStatus === 'loading'
 
     const onClickHandlerDeleteTask = useCallback(() => {
-        // @ts-ignore
         dispatch(deleteTaskThunkCreator(todolistId, taskId))
     }, [dispatch])
 
     const onChangeCheckHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const statusTask = e.currentTarget.checked
-        // @ts-ignore
         dispatch(updateTaskThunkCreator(todolistId, taskId, {status: statusTask ? TaskStatuses.Completed : TaskStatuses.New}))
     }, [dispatch])
 
     const changeTitleTask = useCallback((newTitle: string) => {
-        // @ts-ignore
         dispatch(updateTaskThunkCreator(todolistId, taskId, {title: newTitle}))
     }, [dispatch])
 
