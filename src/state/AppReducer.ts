@@ -8,9 +8,9 @@ export type setAppErrorACType = ReturnType<typeof setAppErrorAC>
 export type setInitializedAppErrorACACType = ReturnType<typeof setInitializedAppErrorAC>
 
 const initialState = {
-    status:'idle' as const,
-    error:null,
-    isInitialized:false
+    status:'idle' as const, // отображаем полоску загрузка если loading
+    error:null, // тест ошибки если промис резолвится
+    isInitialized:false // проинициалзированно приложение или нет(показываем общую крутилку)
 }
 export const AppReducer = (state:initialStateType = initialState,action:AppReducerActionsType):initialStateType => {
 

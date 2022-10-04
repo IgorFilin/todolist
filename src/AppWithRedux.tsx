@@ -1,17 +1,7 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {Todolists} from "./components/Todolists/Todolists";
-import {AddItemForm} from "./components/AddItemForm/AddItemForm";
-import {
-    changeFilterTodolistAC,
-    createTodolistsThunkCreator,
-    deleteTodolistsThunkCreator,
-    fetchTodolistsThunkCreator,
-    FilterValuesType,
-    TodolistDomainType,
-    updateTodolistsThunkCreator
-} from "./state/TodolistReducer";
-import {CircularProgress, Container, Grid, LinearProgress, Paper} from "@material-ui/core";
+import {CircularProgress, Container, LinearProgress} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppRootReducerType} from "./state/store";
 import {AppBarComponent} from "./AppBarComponent";
@@ -19,7 +9,7 @@ import {RequestStatusType} from "./state/AppReducer";
 import CustomizedSnackbars from "./components/ErrorSnackbar/ErrorSnackbar";
 import {Navigate, Route, Routes} from "react-router-dom";
 import Login from "./components/Login/Login";
-import {isAuthTC} from "./state/AuthReducer";
+import {InitializedAppTC} from "./state/AuthReducer";
 
 
 function AppWithRedux() {
@@ -28,7 +18,7 @@ function AppWithRedux() {
     const isInitialized = useSelector<AppRootReducerType, boolean>(state => state.app.isInitialized)
 
     useEffect(() => {
-        dispatch(isAuthTC())
+        dispatch(InitializedAppTC())
     }, [])
 
     if(!isInitialized){

@@ -108,6 +108,7 @@ export const setEntityTaskStatusAC = (entityStatus: RequestStatusType,taskId:str
 
 
 export const fetchTasksThunkCreator = (todolistId: string): AppThunk => (dispatch) => {
+    debugger
     dispatch(setAppStatusAC('loading'))
     tasksApi.getTasks(todolistId)
         .then(items => {

@@ -11,7 +11,7 @@ import {Task} from "./Task/Task";
 import {TaskStatuses} from "../../../api/tasks-api";
 import {RequestStatusType} from "../../../state/AppReducer";
 import {Navigate} from "react-router-dom";
-import {isAuthTC} from "../../../state/AuthReducer";
+import {InitializedAppTC} from "../../../state/AuthReducer";
 
 
 type TodoListPropsType = {

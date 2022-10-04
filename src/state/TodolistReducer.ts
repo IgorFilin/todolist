@@ -83,7 +83,7 @@ export const setTodolistEntityStatusAC = (entityStatus: RequestStatusType,todoli
 
 
 export const fetchTodolistsThunkCreator = (): AppThunk => (dispatch) => {
-    dispatch(setAppStatusAC('loading'))
+    debugger
     todolistsApi.getTodolist()
         .then(response => {
             dispatch(setTodolistsAC(response.data))

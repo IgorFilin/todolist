@@ -4,15 +4,15 @@ import {FormDataType} from "../components/Login/Login";
 import {setAppStatusAC, setInitializedAppErrorAC} from "./AppReducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
-export type AppReducerActionsType =  setLoginACType | logOutACType
+export type AppReducerActionsType =  setLoginACType
 export type initialStateType = {
     isLoggedIn:boolean
 }
 export type setLoginACType = ReturnType<typeof setLoginAC>
-export type logOutACType = ReturnType<typeof logOutAC>
+
 
 const initialState:initialStateType = {
-    isLoggedIn: false
+    isLoggedIn: false // залогинен ли пользователь
 }
 export const AuthReducer = (state: initialStateType = initialState, action: AppReducerActionsType): initialStateType => {
     switch (action.type) {
@@ -29,22 +29,22 @@ export const AuthReducer = (state: initialStateType = initialState, action: AppR
 export const setLoginAC = (login: boolean) => {
     return {type: 'AUTH/SET-LOGIN', login} as const
 }
-export const logOutAC = (isLoggedValue:boolean) => {
-    return {type: 'AUTH/LOG-OUT', isLoggedValue} as const
-}
 
-export const isAuthTC = () => (dispatch: Dispatch) => {
+
+export const InitializedAppTC = () => (dispatch: Dispatch) => {
     authApi.authMe()
         .then((res) => {
             if (res.data.resultCode === 0) {
-                dispatch(setLoginAC(false))
+                dispatch(setLoginAC(true))
                 dispatch(setInitializedAppErrorAC(true))
             } else {
                 handleServerAppError(res.data, dispatch)
+                dispatch(setInitializedAppErrorAC(true))
             }
         })
         .catch(error => {
             handleServerNetworkError(error, dispatch)
+            dispatch(setInitializedAppErrorAC(true))
         })
 }
 
@@ -58,7 +58,6 @@ export const loginTC = (formData: FormDataType) => {
                     dispatch(setLoginAC(true))
                 } else {
                     handleServerAppError(res.data, dispatch)
-                    dispatch(setAppStatusAC('failed'))
                     dispatch(setLoginAC(false))
                 }
             })
@@ -69,13 +68,14 @@ export const loginTC = (formData: FormDataType) => {
     }
 }
 export const logOutTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     authApi.logOut()
         .then((res) => {
             if (res.data.resultCode === 0) {
-                dispatch(logOutAC(true))
-                dispatch(setInitializedAppErrorAC(true))
+                dispatch(setLoginAC(false))
+                dispatch(setAppStatusAC('succeeded'))
             } else {
-                dispatch(logOutAC(false))
+                handleServerAppError(res.data, dispatch)
             }
         })
         .catch(error => {

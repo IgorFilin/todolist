@@ -13,8 +13,8 @@ export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: ErrorUt
 }
 
 export const handleServerNetworkError = (error: { message: string }, dispatch: ErrorUtilsDispatchType) => {
-    dispatch(setAppErrorAC(error.message))
-    dispatch(setAppStatusAC('failed'))
+    dispatch(setAppErrorAC(error.message)) // сетаем в AppReducer тест ошибки при реджекте запроса
+    dispatch(setAppStatusAC('failed')) // меняет статус приложения, полоска загрузки показывается при статусе loading
 }
 
 type ErrorUtilsDispatchType = Dispatch<setAppStatusACType | setAppErrorACType>
