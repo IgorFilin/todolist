@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://IgorFilin.github.io/todolist",
+  "engines":
+  { "node": "16.15.0",
+  "npm": "8.5.5"},
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
@@ -17,6 +20,7 @@
     "@types/react-redux": "^7.1.24",
     "@types/uuid": "^8.3.4",
     "axios": "^0.27.2",
+    "create-app-react": "^1.0.6",
     "formik": "^2.2.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
