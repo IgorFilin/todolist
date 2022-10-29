@@ -38,16 +38,17 @@ export const Task = React.memo(({taskId, status, todolistId, title, entityTaskSt
         marginLeft: '10px',
         opacity: '0.5'
     } : {marginLeft: '10px'}}>
-        <FormControlLabel
-            control={
-                <Checkbox disabled={disabledValue} checked={status === TaskStatuses.Completed}
-                          onChange={onChangeCheckHandler}
-                          icon={<FavoriteBorder/>} checkedIcon={<Favorite/>} name="checkedH"/>
-            } label=""/>
+        <Checkbox
+            disabled={disabledValue} checked={status === TaskStatuses.Completed}
+            onChange={onChangeCheckHandler}
+            name="checkedH"
+            color="secondary"
+        />
         <EditableSpan disable={entityTaskStatus === 'loading'} title={title}
                       changeTitle={(newTitle) => changeTitleTask(newTitle)}/>
         <IconButton style={{float:'right'}} disabled={disabledValue} size={"small"}
                     onClick={onClickHandlerDeleteTask}><Delete/>
         </IconButton>
+
     </div>
 })

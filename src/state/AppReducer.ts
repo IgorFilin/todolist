@@ -10,7 +10,7 @@ export type clearAppStateACType = ReturnType<typeof clearAppStateAC>
 
 const initialState = {
     status:'idle' as const, // отображаем полоску загрузка если loading
-    error:null, // тест ошибки если промис резолвится
+    error:null, // текст ошибки если промис резолвится
     isInitialized:false // проинициалзированно приложение или нет(показываем общую крутилку)
 }
 export const AppReducer = (state:initialStateType = initialState,action:AppReducerActionsType):initialStateType => {
