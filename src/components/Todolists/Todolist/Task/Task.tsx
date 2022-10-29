@@ -46,7 +46,7 @@ export const Task = React.memo(({taskId, status, todolistId, title, entityTaskSt
         />
         <EditableSpan disable={entityTaskStatus === 'loading'} title={title}
                       changeTitle={(newTitle) => changeTitleTask(newTitle)}/>
-        <IconButton style={{float:'right'}} disabled={disabledValue} size={"small"}
+        <IconButton style={{float: 'right'}} disabled={disabledValue} size={"small"}
                     onClick={onClickHandlerDeleteTask}><Delete/>
         </IconButton>
 

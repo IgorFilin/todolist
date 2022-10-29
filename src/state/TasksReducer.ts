@@ -1,9 +1,9 @@
 import {CreateTodolistACType, DeleteTodolistACType, SetTodolistACType} from "./TodolistReducer";
-
 import {tasksApi, TaskType, updateTaskType} from "../api/tasks-api";
 import {AppThunk} from "./store";
 import {clearAppStateACType, RequestStatusType, setAppStatusAC} from "./AppReducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import axios, {AxiosError} from "axios";
 
 
 export type ActionCreatorsTasksType =
@@ -90,7 +90,7 @@ export const TasksReducer = (state: TasksStateType = initialState, action: Actio
                 } : t)
             }
         }
-        case "APP/CLEAR-APP-STATE":{
+        case "APP/CLEAR-APP-STATE": {
             return {}
         }
         default:
@@ -117,75 +117,86 @@ export const setEntityTaskStatusAC = (entityStatus: RequestStatusType, taskId: s
 }
 
 
-export const fetchTasksThunkCreator = (todolistId: string): AppThunk => (dispatch) => {
-    dispatch(setAppStatusAC('loading'))
-    tasksApi.getTasks(todolistId)
-        .then(items => {
-            dispatch(setTaskAC(items, todolistId))
-            dispatch(setAppStatusAC('succeeded'))
-        })
-        .catch(error => {
+export const fetchTasksThunkCreator = (todolistId: string): AppThunk => async (dispatch) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
+        const response = await tasksApi.getTasks(todolistId)
+        dispatch(setTaskAC(response, todolistId))
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
             handleServerNetworkError(error, dispatch)
-        })
-}
-export const deleteTaskThunkCreator = (todolistId: string, taskId: string): AppThunk => (dispatch) => {
-    dispatch(setAppStatusAC('loading'))
-    dispatch(setEntityTaskStatusAC('loading', taskId, todolistId))
-    tasksApi.deleteTask(todolistId, taskId)
-        .then(items => {
-            dispatch(deleteTaskAC(todolistId, taskId))
-            dispatch(setAppStatusAC('succeeded'))
-            dispatch(setEntityTaskStatusAC('succeeded', taskId, todolistId))
-        })
-        .catch(error => {
-            dispatch(setEntityTaskStatusAC('failed', taskId, todolistId))
-            handleServerNetworkError(error, dispatch)
-        })
-}
-export const createTaskThunkCreator = (todolistId: string, title: string): AppThunk => (dispatch) => {
-    dispatch(setAppStatusAC('loading'))
-    tasksApi.createTask(todolistId, title)
-        .then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(createTaskAC(todolistId, response.data.data.item))
-                dispatch(setAppStatusAC('succeeded'))
-            } else if (response.data.resultCode === 1) {
-                handleServerAppError(response.data, dispatch)
-            }
-        })
-        .catch(error => {
-            handleServerNetworkError(error, dispatch)
-        })
-}
-export const updateTaskThunkCreator = (todolistId: string, taskId: string, updatePayload: updateTaskDomainType): AppThunk => (dispatch, getState) => {
-    dispatch(setEntityTaskStatusAC('loading', taskId, todolistId))
-    dispatch(setAppStatusAC('loading'))
-    const task = getState().tasks[todolistId].find(task => task.id === taskId)
-    if (!task) return console.warn('Task not found')
-    const updateTaskModel: updateTaskType = {
-        title: task.title,
-        description: task.description,
-        completed: task.completed,
-        status: task.status,
-        priority: task.priority,
-        startDate: task.startDate,
-        deadline: task.deadline,
-        ...updatePayload
+        }
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
     }
-    tasksApi.updateTask(todolistId, taskId, updateTaskModel)
-        .then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(updateTaskAC(todolistId, taskId, response.data.data.item))
-                dispatch(setAppStatusAC('succeeded'))
-                dispatch(setEntityTaskStatusAC('succeeded', taskId, todolistId))
-            } else if (response.data.resultCode === 1) {
-                handleServerAppError(response.data, dispatch)
-                dispatch(setEntityTaskStatusAC('failed', taskId, todolistId))
-            }
+}
 
-        })
-        .catch((error) => {
+export const deleteTaskThunkCreator = (todolistId: string, taskId: string): AppThunk => async (dispatch) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
+        dispatch(setEntityTaskStatusAC('loading', taskId, todolistId))
+        const response = await tasksApi.deleteTask(todolistId, taskId)
+        dispatch(deleteTaskAC(todolistId, taskId))
+        dispatch(setEntityTaskStatusAC('succeeded', taskId, todolistId))
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            handleServerNetworkError(err, dispatch)
+            dispatch(setEntityTaskStatusAC('failed', taskId, todolistId))
+        }
+
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+export const createTaskThunkCreator = (todolistId: string, title: string): AppThunk => async (dispatch) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
+        const response = await tasksApi.createTask(todolistId, title)
+        if (response.data.resultCode === 0) {
+            dispatch(createTaskAC(todolistId, response.data.data.item))
+        } else {
+            handleServerAppError(response.data, dispatch)
+        }
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            handleServerNetworkError(err, dispatch)
+        }
+
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+export const updateTaskThunkCreator = (todolistId: string, taskId: string, updatePayload: updateTaskDomainType): AppThunk => async (dispatch, getState) => {
+    try {
+        dispatch(setEntityTaskStatusAC('loading', taskId, todolistId))
+        dispatch(setAppStatusAC('loading'))
+        const task = getState().tasks[todolistId].find(task => task.id === taskId)
+        if (!task) return console.warn('Task not found')
+        const updateTaskModel: updateTaskType = {
+            title: task.title,
+            description: task.description,
+            completed: task.completed,
+            status: task.status,
+            priority: task.priority,
+            startDate: task.startDate,
+            deadline: task.deadline,
+            ...updatePayload
+        }
+        const response = await tasksApi.updateTask(todolistId, taskId, updateTaskModel)
+        if (response.data.resultCode === 0) {
+            dispatch(updateTaskAC(todolistId, taskId, response.data.data.item))
+            dispatch(setEntityTaskStatusAC('succeeded', taskId, todolistId))
+        } else if (response.data.resultCode === 1) {
+            handleServerAppError(response.data, dispatch)
+            dispatch(setEntityTaskStatusAC('failed', taskId, todolistId))
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
             handleServerNetworkError(error, dispatch)
             dispatch(setEntityTaskStatusAC('failed', taskId, todolistId))
-        })
+        }
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+
 }
