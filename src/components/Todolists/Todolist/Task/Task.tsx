@@ -34,10 +34,14 @@ export const Task = React.memo(({taskId, status, todolistId, title, entityTaskSt
     }, [dispatch])
 
     return <div style={status === TaskStatuses.Completed ? {
+        display:'flex',
+        flexDirection:'row',
+        alignItems:'center',
+        width:'75%',
         textDecoration: 'line-through',
         marginLeft: '10px',
         opacity: '0.5'
-    } : {marginLeft: '10px'}}>
+    } : {marginLeft: '10px', width:'75%',display:'flex',flexDirection:'row',alignItems:'center'}}>
         <Checkbox
             disabled={disabledValue} checked={status === TaskStatuses.Completed}
             onChange={onChangeCheckHandler}
@@ -46,7 +50,7 @@ export const Task = React.memo(({taskId, status, todolistId, title, entityTaskSt
         />
         <EditableSpan disable={entityTaskStatus === 'loading'} title={title}
                       changeTitle={(newTitle) => changeTitleTask(newTitle)}/>
-        <IconButton style={{float: 'right'}} disabled={disabledValue} size={"small"}
+        <IconButton disabled={disabledValue} size={"small"}
                     onClick={onClickHandlerDeleteTask}><Delete/>
         </IconButton>
 
