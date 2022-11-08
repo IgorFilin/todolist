@@ -12,35 +12,95 @@ import {AuthReducer} from "../state/AuthReducer";
 const rootReducer = combineReducers({
     tasks: TasksReducer,
     todolists: TodolistReducer,
-    auth:AuthReducer
+    auth: AuthReducer
 })
 
-const initialGlobalState:AppRootReducerType = {
+const initialGlobalState: AppRootReducerType = {
     todolists: [
-        {id:'todolistId1', title:'What to learn', addedDate:'', order:0,filter: "All", entityTodolistStatus:'idle'},
-        {id: "todolistId2", title: "What to buy",addedDate:'', order:0, filter: "All",entityTodolistStatus:'idle'}
-    ] ,
+        {
+            id: 'todolistId1',
+            title: 'What to learn',
+            addedDate: '',
+            order: 0,
+            filter: "All",
+            entityTodolistStatus: 'idle'
+        },
+        {id: "todolistId2", title: "What to buy", addedDate: '', order: 0, filter: "All", entityTodolistStatus: 'idle'}
+    ],
     tasks: {
         ["todolistId1"]: [
-            {id: v1(), title: "HTML&CSS", description: '', todoListId: '', order: 0, status: TaskStatuses.New, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false,entityTaskStatus:'idle'},
-            {id: v1(), title: "HTML&CSS", description: '', todoListId: '', order: 0, status: TaskStatuses.Completed, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false,entityTaskStatus:'idle'}
+            {
+                id: v1(),
+                title: "HTML&CSS",
+                description: '',
+                todoListId: '',
+                order: 0,
+                status: TaskStatuses.New,
+                priority: TodoTaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                completed: false,
+                entityTaskStatus: 'idle'
+            },
+            {
+                id: v1(),
+                title: "HTML&CSS",
+                description: '',
+                todoListId: '',
+                order: 0,
+                status: TaskStatuses.Completed,
+                priority: TodoTaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                completed: false,
+                entityTaskStatus: 'idle'
+            }
         ],
         ["todolistId2"]: [
-            {id: v1(), title: "Milk", description: '', todoListId: '', order: 0, status: TaskStatuses.Completed, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false,entityTaskStatus:'idle'},
-            {id: v1(), title: "React Book", description: '', todoListId: '', order: 0, status: TaskStatuses.New, priority: TodoTaskPriorities.Low, startDate: '', deadline: '', addedDate: '',completed:false,entityTaskStatus:'idle'}
+            {
+                id: v1(),
+                title: "Milk",
+                description: '',
+                todoListId: '',
+                order: 0,
+                status: TaskStatuses.Completed,
+                priority: TodoTaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                completed: false,
+                entityTaskStatus: 'idle'
+            },
+            {
+                id: v1(),
+                title: "React Book",
+                description: '',
+                todoListId: '',
+                order: 0,
+                status: TaskStatuses.New,
+                priority: TodoTaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                completed: false,
+                entityTaskStatus: 'idle'
+            }
         ]
     },
-    app:{
-        status:'idle',
-        error:null,
+    app: {
+        status: 'idle',
+        error: null,
         isInitialized: true
     },
-    auth:{
-        isLoggedIn:true
+    auth: {
+        isLoggedIn: true,
+        captcha: ''
     }
 };
 
-export const storyBookStore = legacy_createStore(rootReducer, initialGlobalState as AppRootReducerType,applyMiddleware(thunk));
+export const storyBookStore = legacy_createStore(rootReducer, initialGlobalState as AppRootReducerType, applyMiddleware(thunk));
 
 export const ReduxStoreProviderDecorator = (storyFn: () => JSX.Element) => (
     <Provider

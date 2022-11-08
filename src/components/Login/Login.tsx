@@ -27,14 +27,16 @@ export type FormDataType = {
 const Login = () => {
     const dispatch = useDispatch<AppDispatch>()
     const status = useSelector<AppRootReducerType, RequestStatusType>(state => state.app.status)
-    const isLoggedIn  = useSelector<AppRootReducerType, boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn = useSelector<AppRootReducerType, boolean>(state => state.auth.isLoggedIn)
+    const captcha = useSelector<AppRootReducerType, string>(state => state.auth.captcha)
 
 
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
-            rememberMe: false
+            rememberMe: false,
+            captcha: ''
         },
         validate: values => {
             let errors: FormDataType = {}
@@ -54,7 +56,7 @@ const Login = () => {
         },
     });
 
-    if(isLoggedIn) {
+    if (isLoggedIn) {
         return <Navigate to={'/'}/>
     }
 
@@ -91,10 +93,22 @@ const Login = () => {
                                         <div
                                             style={{textAlign: 'center', color: 'red'}}>{formik.errors.password}</div> :
                                         <br/>}
-                                    <FormControlLabel name={'rememberMe'} label={'Remember me'} control={<Checkbox  {...formik.getFieldProps('rememberMe')} checked={formik.values.rememberMe}/>}/>
+                                    <FormControlLabel name={'rememberMe'} label={'Remember me'}
+                                                      control={<Checkbox  {...formik.getFieldProps('rememberMe')}
+                                                                          checked={formik.values.rememberMe}/>}/>
                                     <Button type={'submit'} variant={'contained'} color={'primary'}>
                                         Login
                                     </Button>
+                                    {captcha && <div style={{display:'flex',flexDirection:'column',margin:'20px 0 100px 0'}}>
+                                        <img src={captcha} alt="captcha"/>
+                                        <TextField {...formik.getFieldProps('captcha')}
+                                                   name='captcha'
+                                                   variant={"outlined"}
+                                                   type="text" label="captcha"
+                                                   margin="normal"
+                                                   value={formik.values.captcha}
+                                        />
+                                    </div>}
                                 </FormGroup>
                             </FormControl>
                         </form>

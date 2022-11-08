@@ -16,13 +16,16 @@ export type authMeDataType = {
 }
 
 export const authApi = {
-    authMe(){
+    authMe() {
         return instance.get<ResponseType<authMeDataType>>('/auth/me')
     },
-    logIn(formData:FormDataType){
-        return instance.post<ResponseType<{userId:number}>>('/auth/login',formData)
+    logIn(formData: FormDataType) {
+        return instance.post<ResponseType<{ userId: number }>>('/auth/login', formData)
     },
-    logOut(){
+    logOut() {
         return instance.delete<ResponseType<{}>>('/auth/login')
+    },
+    getCaptcha() {
+        return axios.get('https://social-network.samuraijs.com/api/1.0/security/get-captcha-url', settings)
     }
 }

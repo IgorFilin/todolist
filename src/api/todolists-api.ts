@@ -26,7 +26,6 @@ export type ResponseType<D = {}> = {
     data: D
 }
 
-
 export const todolistsApi = {
     getTodolist() {
         return instance.get<Array<TodolistsType>>('/todo-lists')
