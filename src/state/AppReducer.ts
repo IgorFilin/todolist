@@ -13,6 +13,7 @@ const initialState = {
     error:null, // текст ошибки если промис резолвится
     isInitialized:false // проинициалзированно приложение или нет(показываем общую крутилку)
 }
+
 export const AppReducer = (state:initialStateType = initialState,action:AppReducerActionsType):initialStateType => {
 
     switch (action.type){
