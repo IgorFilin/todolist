@@ -1,17 +1,16 @@
-import React, {useCallback, useEffect} from "react";
-import {fetchTodolistsThunkCreator, FilterValuesType} from "../../../state/TodolistReducer";
+import React, {useCallback} from "react";
+import {FilterValuesType} from "../../../state/TodolistReducer";
 import {AddItemForm} from "../../AddItemForm/AddItemForm";
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {DeleteForever} from "@material-ui/icons";
-import {createTaskThunkCreator, fetchTasksThunkCreator, TasksDomainType} from "../../../state/TasksReducer";
+import {createTaskThunkCreator, TasksDomainType} from "../../../state/TasksReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppRootReducerType} from "../../../state/store";
 import {Task} from "./Task/Task";
 import {TaskStatuses} from "../../../api/tasks-api";
 import {RequestStatusType} from "../../../state/AppReducer";
 import {Navigate} from "react-router-dom";
-import {InitializedAppTC} from "../../../state/AuthReducer";
 
 
 type TodoListPropsType = {
@@ -25,7 +24,7 @@ type TodoListPropsType = {
 }
 
 
-export let Todolist = React.memo((props: TodoListPropsType) => {
+export const Todolist = React.memo((props: TodoListPropsType) => {
     const tasks = useSelector<AppRootReducerType, Array<TasksDomainType>>(state => state.tasks[props.todolistId])
     const dispatch = useDispatch<AppDispatch>()
     const isLoggedIn = useSelector<AppRootReducerType, boolean>(state => state.auth.isLoggedIn)
