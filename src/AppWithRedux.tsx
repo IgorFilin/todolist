@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {Todolists} from "./components/Todolists/Todolists";
+import {Todolists} from "./.././src/components/Todolists/Todolists";
 import {CircularProgress, Container, LinearProgress} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppRootReducerType} from "./state/store";
 import {AppBarComponent} from "./AppBarComponent";
 import {RequestStatusType} from "./state/AppReducer";
 import CustomizedSnackbars from "./components/ErrorSnackbar/ErrorSnackbar";
-import {Navigate, Route, Router, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import Login from "./components/Login/Login";
 import {InitializedAppTC} from "./state/AuthReducer";
 

@@ -4,7 +4,7 @@ import {AppThunk} from "./store";
 import {clearAppStateACType, RequestStatusType, setAppStatusAC} from "./AppReducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import axios, {AxiosError} from "axios";
-
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 
 export type ActionCreatorsTasksType =
     DeleteTaskACType
@@ -116,6 +116,19 @@ export const setEntityTaskStatusAC = (entityStatus: RequestStatusType, taskId: s
     return {type: 'SET-ENTITY-TASK-STATUS', entityStatus, taskId, todolistId} as const
 }
 
+export function* fetchTasksSagaWorker  (todolistId: string):any {
+    try {
+        yield put(setAppStatusAC('loading'))
+        const response = yield call(tasksApi.getTasks,todolistId)
+        yield put(setTaskAC(response, todolistId))
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            handleServerNetworkError(error, put)
+        }
+    } finally {
+       yield put(setAppStatusAC('succeeded'))
+    }
+}
 
 export const fetchTasksThunkCreator = (todolistId: string): AppThunk => async (dispatch) => {
     try {
