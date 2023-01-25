@@ -2,9 +2,9 @@ import {CreateTodolistACType, DeleteTodolistACType, SetTodolistACType} from "./T
 import {tasksApi, TaskType, updateTaskType} from "../api/tasks-api";
 import {AppThunk} from "./store";
 import {clearAppStateACType, RequestStatusType, setAppStatusAC} from "./AppReducer";
-import {handleServerAppError, handleServerNetworkError, handleServerNetworkErrorSaga} from "../utils/error-utils";
-import axios, {AxiosError} from "axios";
-import { call, put } from 'redux-saga/effects'
+import {handleServerAppError, handleServerNetworkError, handleServerNetworkErrorSagaAC} from "../utils/error-utils";
+import axios from "axios";
+import {call, put,takeEvery} from 'redux-saga/effects'
 
 export type ActionCreatorsTasksType =
     DeleteTaskACType
@@ -39,6 +39,13 @@ type updateTaskDomainType = {
     startDate?: string,
     deadline?: string
 }
+
+export function* tasksWatcherSaga () {
+    yield takeEvery('TASKS/FETCH_TASKS', fetchTasksSagaWorker)
+}
+
+export const fetchTasksAC = (todolistId:string) => ({type:'TASKS/FETCH_TASKS',todolistId})
+
 
 const initialState: TasksStateType = {}
 
@@ -117,19 +124,20 @@ export const setEntityTaskStatusAC = (entityStatus: RequestStatusType, taskId: s
 }
 
 export function* fetchTasksSagaWorker (action:any):any {
+    debugger
     try {
         yield put(setAppStatusAC('loading'))
         const response = yield call(tasksApi.getTasks,action.todolistId)
         yield put(setTaskAC(response, action.todolistId))
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            handleServerNetworkErrorSaga(error)
+            yield put(handleServerNetworkErrorSagaAC(error))
         }
     } finally {
         yield put(setAppStatusAC('succeeded'))
     }
 }
-export const fetchTasksAC = (todolistId:string) => ({type:'FETCH_TASKS',todolistId})
+
 
 export const fetchTasksThunkCreator = (todolistId: string): AppThunk => async (dispatch) => {
     try {

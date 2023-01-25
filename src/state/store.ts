@@ -1,44 +1,47 @@
 import {applyMiddleware, combineReducers, legacy_createStore as createStore} from "redux";
-import {ActionCreatorsTodolistsType, TodolistReducer} from "./TodolistReducer";
-import {ActionCreatorsTasksType, fetchTasksSagaWorker, TasksReducer} from "./TasksReducer";
+import {ActionCreatorsTodolistsType, fetchTodolistsSagaWorker, TodolistReducer} from "./TodolistReducer";
+import {ActionCreatorsTasksType, TasksReducer, tasksWatcherSaga} from "./TasksReducer";
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {AppReducer} from "./AppReducer";
-import {AuthReducer, InitializedAppSagaWorker, loginSagaWorker} from "./AuthReducer";
+import {AuthReducer, authSagaWatcher} from "./AuthReducer";
 import createSagaMiddleware from 'redux-saga'
-import { takeEvery } from 'redux-saga/effects'
-import {handleServerAppErrorSaga} from "../utils/error-utils";
+import {errorUtilsWatcher} from "../utils/error-utils";
+import {takeEvery, all} from 'redux-saga/effects'
 
 //rootReducer
 const rootReducer = combineReducers({
     todolists: TodolistReducer,
     tasks: TasksReducer,
-    app:AppReducer,
-    auth:AuthReducer,
+    app: AppReducer,
+    auth: AuthReducer,
 })
 
 //saga and store
 const sagaMiddleware = createSagaMiddleware()
 
-export const store = createStore(rootReducer, applyMiddleware(thunk,sagaMiddleware))
+export const store = createStore(rootReducer, applyMiddleware(thunk, sagaMiddleware))
 
-sagaMiddleware.run(rootWatcher)
 
-function* rootWatcher () {
-    yield takeEvery('INITIALIZED_APP',InitializedAppSagaWorker)
-    yield takeEvery('FETCH_TASKS',fetchTasksSagaWorker)
-    yield takeEvery('LOGIN',loginSagaWorker)
-    yield takeEvery('HANDLE_SERVER_APP',handleServerAppErrorSaga)
+function* rootWatcher() {
+    yield all([
+         authSagaWatcher(),
+         takeEvery('TODOLISTS/FETCH_TODOLISTS',fetchTodolistsSagaWorker),
+         tasksWatcherSaga(),
+         errorUtilsWatcher()
+    ])
+
 }
 
+sagaMiddleware.run(rootWatcher)
 
 //types
 export type AppRootReducerType = ReturnType<typeof rootReducer>
 
 export type DomainActionsCreatorsType = ActionCreatorsTodolistsType | ActionCreatorsTasksType
 
-export type AppDispatch = ThunkDispatch<AppRootReducerType,unknown,DomainActionsCreatorsType>
+export type AppDispatch = ThunkDispatch<AppRootReducerType, unknown, DomainActionsCreatorsType>
 
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType,AppRootReducerType,unknown,DomainActionsCreatorsType>
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootReducerType, unknown, DomainActionsCreatorsType>
 
 // @ts-ignore
 window.store = store

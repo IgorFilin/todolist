@@ -8,9 +8,10 @@ import {
     setAppErrorAC,
     setAppStatusAC
 } from "./AppReducer";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {handleServerAppError, handleServerNetworkError, handleServerNetworkErrorSagaAC} from "../utils/error-utils";
 import {fetchTasksAC, fetchTasksThunkCreator} from "./TasksReducer";
 import axios from "axios";
+import {call, put,takeEvery} from 'redux-saga/effects'
 
 export type ActionCreatorsTodolistsType =
     ChangeFilterACType
@@ -38,6 +39,7 @@ export type FilterValuesType = 'All' | 'Active' | 'Completed'
 
 const initialState: Array<TodolistDomainType> = []
 
+export const fetchTodolistsSagaWorkerAC = () => ({type:'TODOLISTS/FETCH_TODOLISTS'})
 
 export const TodolistReducer = (state: Array<TodolistDomainType> = initialState, action: ActionCreatorsTodolistsType): Array<TodolistDomainType> => {
     switch (action.type) {
@@ -101,20 +103,17 @@ export const setTodolistEntityStatusAC = (entityStatus: RequestStatusType, todol
 }
 
 
-export const fetchTodolistsThunkCreator = (): AppThunk => async (dispatch:any) => {
+export function* fetchTodolistsSagaWorker ():any {
     try {
-        dispatch(setAppStatusAC('loading'))
-        const response = await todolistsApi.getTodolist()
-        dispatch(setTodolistsAC(response.data))
-        dispatch(setAppStatusAC('succeeded'))
-        response.data.forEach(t => {
-            dispatch(fetchTasksAC(t.id))
-        })
+        yield put(setAppStatusAC('loading'))
+        const response = yield call(todolistsApi.getTodolist)
+        yield put(setTodolistsAC(response.data))
+        yield put(setAppStatusAC('succeeded'))
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            handleServerNetworkError(error, dispatch)
+            yield put(handleServerNetworkErrorSagaAC(error))
         }
-        dispatch(setAppStatusAC('failed'))
+        yield put(setAppStatusAC('failed'))
     }
 }
 

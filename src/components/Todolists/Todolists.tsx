@@ -2,25 +2,19 @@ import React, {useCallback, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppDispatch, AppRootReducerType} from '../../state/store'
 import {
-    changeFilterTodolistAC, createTodolistsThunkCreator,
+    changeFilterTodolistAC,
+    createTodolistsThunkCreator,
     deleteTodolistsThunkCreator,
-    fetchTodolistsThunkCreator,
+    fetchTodolistsSagaWorkerAC,
     FilterValuesType,
-    TodolistDomainType, updateTodolistsThunkCreator
+    TodolistDomainType,
+    updateTodolistsThunkCreator
 } from "../../state/TodolistReducer";
-import {
-    createTaskThunkCreator,
-    deleteTaskThunkCreator,
-    TasksStateType,
-    updateTaskThunkCreator
-} from "../../state/TasksReducer";
-import {TaskStatuses} from "../../api/tasks-api";
+import {TasksStateType} from "../../state/TasksReducer";
 import {Navigate} from "react-router-dom";
 import {Grid, Paper} from "@material-ui/core";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
-
-
 
 
 export const Todolists = () => {
@@ -30,7 +24,7 @@ export const Todolists = () => {
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
-        dispatch(fetchTodolistsThunkCreator())
+        dispatch<any>(fetchTodolistsSagaWorkerAC())
 
     }, [])
 

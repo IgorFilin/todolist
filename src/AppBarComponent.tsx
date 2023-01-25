@@ -2,8 +2,8 @@ import React from "react";
 import {AppBar, Button, IconButton, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppRootReducerType} from "./state/store";
-import {logOutTC} from "./state/AuthReducer";
+import {AppRootReducerType} from "./state/store";
+import {logOutSagaWorkerAC} from "./state/AuthReducer";
 
 export type AppBarComponentTypeProps = {}
 
@@ -11,10 +11,10 @@ export type AppBarComponentTypeProps = {}
 export const AppBarComponent = React.memo((props: AppBarComponentTypeProps) => {
 
     const isLoggedIn = useSelector<AppRootReducerType, boolean>(state => state.auth.isLoggedIn)
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch()
 
     const onClickHandlerLogOut = () => {
-        dispatch(logOutTC())
+        dispatch(logOutSagaWorkerAC())
     }
 
     return <AppBar position="static">
