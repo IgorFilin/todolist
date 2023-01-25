@@ -8,9 +8,14 @@ import {
     setAppErrorAC,
     setAppStatusAC
 } from "./AppReducer";
-import {handleServerAppError, handleServerNetworkError, handleServerNetworkErrorSagaAC} from "../utils/error-utils";
+import {
+    handleServerAppError,
+    handleServerAppErrorSagaAC,
+    handleServerNetworkError,
+    handleServerNetworkErrorSagaAC
+} from "../utils/error-utils";
 import axios from "axios";
-import {call, put} from 'redux-saga/effects'
+import {call, put,takeEvery} from 'redux-saga/effects'
 
 export type ActionCreatorsTodolistsType =
     ChangeFilterACType
@@ -39,6 +44,14 @@ export type FilterValuesType = 'All' | 'Active' | 'Completed'
 const initialState: Array<TodolistDomainType> = []
 
 export const fetchTodolistsSagaWorkerAC = () => ({type:'TODOLISTS/FETCH_TODOLISTS'})
+export const createTodolistSagaWorkerAC = (title:string) => ({type:'TODOLISTS/CREATE_TODOLIST',title})
+export const updateTodolistsSagaWorkerAC = (title:string,todolistId:string) => ({type:'TODOLISTS/UPDATE_TODOLIST',title,todolistId})
+
+export function* todolistsWatcher () {
+    yield takeEvery('TODOLISTS/FETCH_TODOLISTS',fetchTodolistsSagaWorker)
+    yield takeEvery('TODOLISTS/CREATE_TODOLIST',createTodolistsSagaWorker)
+    yield takeEvery('TODOLISTS/UPDATE_TODOLIST',updateTodolistsSagaWorker)
+}
 
 export const TodolistReducer = (state: Array<TodolistDomainType> = initialState, action: ActionCreatorsTodolistsType): Array<TodolistDomainType> => {
     switch (action.type) {
@@ -116,44 +129,43 @@ export function* fetchTodolistsSagaWorker ():any {
     }
 }
 
-export const createTodolistsThunkCreator = (title: string): AppThunk => async (dispatch) => {
+export function* createTodolistsSagaWorker  (action:any):any  {
     try {
-        dispatch(setAppStatusAC('loading'))
-        const response = await todolistsApi.createTodolist(title)
+        yield put(setAppStatusAC('loading'))
+        const response = yield call(todolistsApi.createTodolist,action.title)
         if (response.resultCode === 0) {
-            dispatch(createTodolistAC(response.data.item.id, response.data.item))
+            yield put(createTodolistAC(response.data.item.id, response.data.item))
         } else {
-            dispatch(setAppErrorAC(response.messages[0]))
-            dispatch(setAppStatusAC('failed'))
+            yield put(setAppErrorAC(response.messages[0]))
+            yield put(setAppStatusAC('failed'))
         }
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            handleServerNetworkError(error, dispatch)
+            yield put(handleServerNetworkErrorSagaAC(error))
         }
 
     } finally {
-        dispatch(setAppStatusAC('succeeded'))
+        yield put(setAppStatusAC('succeeded'))
     }
 }
-export const updateTodolistsThunkCreator = (todolistId: string, title: string): AppThunk => async (dispatch) => {
+export function* updateTodolistsSagaWorker (action:any):any {
     try {
-        dispatch(setAppStatusAC('loading'))
-        dispatch(setTodolistEntityStatusAC('loading', todolistId))
-        const response = await todolistsApi.updateTodolist(todolistId, title)
-        console.log(response)
+        yield put(setAppStatusAC('loading'))
+        yield put(setTodolistEntityStatusAC('loading', action.todolistId))
+        const response = yield call(todolistsApi.updateTodolist,action.todolistId,action.title)
         if (response.data.resultCode === 0) {
-            dispatch(updateTitleTodolistAC(title, todolistId))
-            dispatch(setAppStatusAC('succeeded'))
-            dispatch(setTodolistEntityStatusAC('succeeded', todolistId))
+            yield put(updateTitleTodolistAC(action.title, action.todolistId))
+            yield put(setAppStatusAC('succeeded'))
+            yield put(setTodolistEntityStatusAC('succeeded', action.todolistId))
         } else if (response.data.resultCode === 1) {
-            handleServerAppError(response.data, dispatch)
-            dispatch(setTodolistEntityStatusAC('failed', todolistId))
+            yield put(handleServerAppErrorSagaAC(response.data))
+            yield put(setTodolistEntityStatusAC('failed', action.todolistId))
         }
 
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            handleServerNetworkError(error, dispatch)
-            dispatch(setTodolistEntityStatusAC('failed', todolistId))
+            yield put(handleServerNetworkErrorSagaAC(error))
+            yield put(setTodolistEntityStatusAC('failed', action.todolistId))
         }
     }
 }

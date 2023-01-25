@@ -1,5 +1,10 @@
 import {applyMiddleware, combineReducers, legacy_createStore as createStore} from "redux";
-import {ActionCreatorsTodolistsType, fetchTodolistsSagaWorker, TodolistReducer} from "./TodolistReducer";
+import {
+    ActionCreatorsTodolistsType,
+    fetchTodolistsSagaWorker,
+    TodolistReducer,
+    todolistsWatcher
+} from "./TodolistReducer";
 import {ActionCreatorsTasksType, TasksReducer, tasksWatcher} from "./TasksReducer";
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {AppReducer} from "./AppReducer";
@@ -24,10 +29,10 @@ export const store = createStore(rootReducer, applyMiddleware(thunk, sagaMiddlew
 
 function* rootWatcher() {
     yield all([
-         authWatcher(),
-         takeEvery('TODOLISTS/FETCH_TODOLISTS',fetchTodolistsSagaWorker),
-         tasksWatcher(),
-         errorUtilsWatcher()
+        authWatcher(),
+        todolistsWatcher(),
+        tasksWatcher(),
+        errorUtilsWatcher()
     ])
 
 }

@@ -2,13 +2,11 @@ import React, {useCallback, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppDispatch, AppRootReducerType} from '../../state/store'
 import {
-    changeFilterTodolistAC,
-    createTodolistsThunkCreator,
+    changeFilterTodolistAC, createTodolistSagaWorkerAC,
     deleteTodolistsThunkCreator,
     fetchTodolistsSagaWorkerAC,
     FilterValuesType,
-    TodolistDomainType,
-    updateTodolistsThunkCreator
+    TodolistDomainType, updateTodolistsSagaWorkerAC
 } from "../../state/TodolistReducer";
 import {TasksStateType} from "../../state/TasksReducer";
 import {Navigate} from "react-router-dom";
@@ -40,13 +38,11 @@ export const Todolists = () => {
     }, [])
 
     const changeTodolistTitle = useCallback(function (id: string, title: string) {
-        const thunk = updateTodolistsThunkCreator(id, title)
-        dispatch(thunk)
+        dispatch<any>(updateTodolistsSagaWorkerAC(title,id))
     }, [])
 
     const addTodolist = useCallback((title: string) => {
-        const thunk = createTodolistsThunkCreator(title)
-        dispatch(thunk)
+        dispatch<any>(createTodolistSagaWorkerAC(title))
     }, [dispatch])
 
     if (!isLoggedIn) {
