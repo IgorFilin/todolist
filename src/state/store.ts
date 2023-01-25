@@ -1,12 +1,12 @@
-import {applyMiddleware, combineReducers} from "redux";
+import {applyMiddleware, combineReducers, legacy_createStore as createStore} from "redux";
 import {ActionCreatorsTodolistsType, TodolistReducer} from "./TodolistReducer";
 import {ActionCreatorsTasksType, fetchTasksSagaWorker, TasksReducer} from "./TasksReducer";
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {  takeEvery } from 'redux-saga/effects'
-import { legacy_createStore as createStore} from 'redux'
 import {AppReducer} from "./AppReducer";
-import {AuthReducer} from "./AuthReducer";
+import {AuthReducer, InitializedAppSagaWorker, loginSagaWorker} from "./AuthReducer";
 import createSagaMiddleware from 'redux-saga'
+import { takeEvery } from 'redux-saga/effects'
+import {handleServerAppErrorSaga} from "../utils/error-utils";
 
 //rootReducer
 const rootReducer = combineReducers({
@@ -24,7 +24,10 @@ export const store = createStore(rootReducer, applyMiddleware(thunk,sagaMiddlewa
 sagaMiddleware.run(rootWatcher)
 
 function* rootWatcher () {
-    // yield takeEvery("ACTIVATOR-ACTION-TYPE", fetchTasksSagaWorker)
+    yield takeEvery('INITIALIZED_APP',InitializedAppSagaWorker)
+    yield takeEvery('FETCH_TASKS',fetchTasksSagaWorker)
+    yield takeEvery('LOGIN',loginSagaWorker)
+    yield takeEvery('HANDLE_SERVER_APP',handleServerAppErrorSaga)
 }
 
 

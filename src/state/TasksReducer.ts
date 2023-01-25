@@ -2,9 +2,9 @@ import {CreateTodolistACType, DeleteTodolistACType, SetTodolistACType} from "./T
 import {tasksApi, TaskType, updateTaskType} from "../api/tasks-api";
 import {AppThunk} from "./store";
 import {clearAppStateACType, RequestStatusType, setAppStatusAC} from "./AppReducer";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {handleServerAppError, handleServerNetworkError, handleServerNetworkErrorSaga} from "../utils/error-utils";
 import axios, {AxiosError} from "axios";
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
 
 export type ActionCreatorsTasksType =
     DeleteTaskACType
@@ -116,19 +116,20 @@ export const setEntityTaskStatusAC = (entityStatus: RequestStatusType, taskId: s
     return {type: 'SET-ENTITY-TASK-STATUS', entityStatus, taskId, todolistId} as const
 }
 
-export function* fetchTasksSagaWorker  (todolistId: string):any {
+export function* fetchTasksSagaWorker (action:any):any {
     try {
         yield put(setAppStatusAC('loading'))
-        const response = yield call(tasksApi.getTasks,todolistId)
-        yield put(setTaskAC(response, todolistId))
+        const response = yield call(tasksApi.getTasks,action.todolistId)
+        yield put(setTaskAC(response, action.todolistId))
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            handleServerNetworkError(error, put)
+            handleServerNetworkErrorSaga(error)
         }
     } finally {
-       yield put(setAppStatusAC('succeeded'))
+        yield put(setAppStatusAC('succeeded'))
     }
 }
+export const fetchTasksAC = (todolistId:string) => ({type:'FETCH_TASKS',todolistId})
 
 export const fetchTasksThunkCreator = (todolistId: string): AppThunk => async (dispatch) => {
     try {

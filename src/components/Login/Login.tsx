@@ -2,7 +2,7 @@ import React from 'react';
 import {useFormik} from "formik";
 import {
     Button,
-    Checkbox, CircularProgress,
+    Checkbox,
     FormControl,
     FormControlLabel,
     FormGroup,
@@ -11,10 +11,10 @@ import {
     TextField
 } from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
-import {loginTC} from "../../state/AuthReducer";
-import {AppDispatch, AppRootReducerType} from "../../state/store";
+import {loginSagaWorkerAC} from "../../state/AuthReducer";
+import {AppRootReducerType} from "../../state/store";
 import {RequestStatusType} from "../../state/AppReducer";
-import {Navigate, useNavigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 
 
 export type FormDataType = {
@@ -25,7 +25,7 @@ export type FormDataType = {
 }
 
 const Login = () => {
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch()
     const status = useSelector<AppRootReducerType, RequestStatusType>(state => state.app.status)
     const isLoggedIn = useSelector<AppRootReducerType, boolean>(state => state.auth.isLoggedIn)
     const captcha = useSelector<AppRootReducerType, string>(state => state.auth.captcha)
@@ -51,7 +51,7 @@ const Login = () => {
             return errors
         },
         onSubmit: values => {
-            dispatch(loginTC((values)));
+            dispatch(loginSagaWorkerAC(values));
             formik.resetForm()
         },
     });

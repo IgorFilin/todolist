@@ -9,17 +9,17 @@ import {RequestStatusType} from "./state/AppReducer";
 import CustomizedSnackbars from "./components/ErrorSnackbar/ErrorSnackbar";
 import {Navigate, Route, Routes} from "react-router-dom";
 import Login from "./components/Login/Login";
-import {InitializedAppTC} from "./state/AuthReducer";
+import {InitializedAppSagaWorkerAC} from "./state/AuthReducer";
 
 
 function AppWithRedux() {
     const status = useSelector<AppRootReducerType, RequestStatusType>(state => state.app.status)
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch()
     const isInitialized = useSelector<AppRootReducerType, boolean>(state => state.app.isInitialized)
     const isLoggedIn = useSelector<AppRootReducerType, boolean>(state => state.auth.isLoggedIn)
 
     useEffect(() => {
-        dispatch(InitializedAppTC())
+        dispatch(InitializedAppSagaWorkerAC())
     }, [])
 
     if(!isInitialized){

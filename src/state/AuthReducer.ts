@@ -1,9 +1,15 @@
 import {Dispatch} from "redux";
 import {authApi} from "../api/auth-api";
 import {FormDataType} from "../components/Login/Login";
-import {clearAppStateAC, setAppStatusAC, setInitializedAppErrorAC} from "./AppReducer";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {clearAppStateAC, setAppErrorAC, setAppStatusAC, setInitializedAppErrorAC} from "./AppReducer";
+import {
+    handleServerAppError,
+    handleServerAppErrorSaga, handleServerAppErrorSagaAC,
+    handleServerNetworkError,
+    handleServerNetworkErrorSaga
+} from "../utils/error-utils";
 import axios from "axios";
+import { call, put } from 'redux-saga/effects'
 
 export type AppReducerActionsType = setLoginACType | setCaptchaACType
 export type initialStateType = {
@@ -40,54 +46,59 @@ export const setCaptchaAC = (url: string) => {
     return {type: 'AUTH/SET-CAPTCHA', url} as const
 }
 
-
-export const InitializedAppTC = () => async (dispatch: Dispatch) => {
-    const response = await authApi.authMe()
+export function* InitializedAppSagaWorker ():any  {
+    const response = yield call(authApi.authMe)
     try {
         if (response.data.resultCode === 0) {
-            dispatch(setLoginAC(true))
-            dispatch(setInitializedAppErrorAC(true))
+           yield put(setLoginAC(true))
+            yield put(setInitializedAppErrorAC(true))
         } else {
-            handleServerAppError(response.data, dispatch)
-            dispatch(setInitializedAppErrorAC(true))
+            handleServerAppErrorSaga(response.data)
+            yield put(setInitializedAppErrorAC(true))
         }
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            handleServerNetworkError(error, dispatch)
-            dispatch(setInitializedAppErrorAC(true))
+            handleServerNetworkErrorSaga(error)
+            put(setInitializedAppErrorAC(true))
         }
 
     }
 
 }
 
-export const loginTC = (formData: FormDataType) => async (dispatch: Dispatch) => {
+export const InitializedAppSagaWorkerAC = () => ({type:'INITIALIZED_APP'})
+
+
+export function* loginSagaWorker  (action:any):any {
     try {
-        dispatch(setAppStatusAC('loading'))
-        const response = await authApi.logIn(formData)
+        yield put(setAppStatusAC('loading'))
+        const response = yield call(authApi.logIn,action.formData)
         if (response.data.resultCode === 0) {
-            dispatch(setAppStatusAC('succeeded'))
-            dispatch(setLoginAC(true))
-            dispatch(setCaptchaAC(''))
+            yield put(setAppStatusAC('succeeded'))
+            yield put(setLoginAC(true))
+            yield put(setCaptchaAC(''))
         } else if (response.data.resultCode === 10) {
-            handleServerAppError(response.data, dispatch)
-            const result = await authApi.getCaptcha()
-            dispatch(setCaptchaAC(result.data.url))
-            dispatch(setLoginAC(false))
-            dispatch(setAppStatusAC('failed'))
+            debugger
+            yield put (handleServerAppErrorSagaAC(response.data))
+            const result = yield call(authApi.getCaptcha)
+            yield put(setCaptchaAC(result.data.url))
+            yield put(setLoginAC(false))
+            yield put(setAppStatusAC('failed'))
         } else {
-            handleServerAppError(response.data, dispatch)
-            dispatch(setLoginAC(false))
+            yield put (handleServerAppErrorSagaAC(response.data))
+            yield put(setLoginAC(false))
         }
 
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            handleServerNetworkError(error, dispatch)
+            handleServerNetworkErrorSaga(error)
         }
     } finally {
-        dispatch(setAppStatusAC('idle'))
+        yield put(setAppStatusAC('idle'))
     }
 }
+
+export const loginSagaWorkerAC = (formData: FormDataType) => ({type:'LOGIN',formData})
 
 export const logOutTC = () => async (dispatch: Dispatch) => {
     try {

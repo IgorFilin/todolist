@@ -9,7 +9,7 @@ import {
     setAppStatusAC
 } from "./AppReducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import {fetchTasksThunkCreator} from "./TasksReducer";
+import {fetchTasksAC, fetchTasksThunkCreator} from "./TasksReducer";
 import axios from "axios";
 
 export type ActionCreatorsTodolistsType =
@@ -101,14 +101,14 @@ export const setTodolistEntityStatusAC = (entityStatus: RequestStatusType, todol
 }
 
 
-export const fetchTodolistsThunkCreator = (): AppThunk => async (dispatch) => {
+export const fetchTodolistsThunkCreator = (): AppThunk => async (dispatch:any) => {
     try {
         dispatch(setAppStatusAC('loading'))
         const response = await todolistsApi.getTodolist()
         dispatch(setTodolistsAC(response.data))
         dispatch(setAppStatusAC('succeeded'))
         response.data.forEach(t => {
-            dispatch(fetchTasksThunkCreator(t.id))
+            dispatch(fetchTasksAC(t.id))
         })
     } catch (error) {
         if (axios.isAxiosError(error)) {
