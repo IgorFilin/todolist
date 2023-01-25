@@ -9,9 +9,8 @@ import {
     setAppStatusAC
 } from "./AppReducer";
 import {handleServerAppError, handleServerNetworkError, handleServerNetworkErrorSagaAC} from "../utils/error-utils";
-import {fetchTasksAC, fetchTasksThunkCreator} from "./TasksReducer";
 import axios from "axios";
-import {call, put,takeEvery} from 'redux-saga/effects'
+import {call, put} from 'redux-saga/effects'
 
 export type ActionCreatorsTodolistsType =
     ChangeFilterACType

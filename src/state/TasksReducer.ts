@@ -40,7 +40,7 @@ type updateTaskDomainType = {
     deadline?: string
 }
 
-export function* tasksWatcherSaga () {
+export function* tasksWatcher () {
     yield takeEvery('TASKS/FETCH_TASKS', fetchTasksSagaWorker)
 }
 

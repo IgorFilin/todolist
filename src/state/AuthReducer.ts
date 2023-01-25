@@ -16,7 +16,7 @@ export type initialStateType = {
 export type setLoginACType = ReturnType<typeof setLoginAC>
 export type setCaptchaACType = ReturnType<typeof setCaptchaAC>
 
-export function* authSagaWatcher () {
+export function* authWatcher () {
     yield takeEvery('AUTH/LOGIN',loginSagaWorker)
     yield takeEvery('AUTH/LOGOUT',logOutSagaWorker)
     yield takeEvery('AUTH/INITIALIZED_APP',InitializedAppSagaWorker)
